@@ -49,7 +49,7 @@ dependencies {
 
     // Database Access
     runtime("mysql:mysql-connector-java:8.0.12")
-    runtime("com.google.cloud.sql:mysql-socket-factory:1.0.9")
+    runtime("com.google.cloud.sql:mysql-socket-factory:1.0.15")
 
     // test dependencies
     testCompile('org.springframework.boot:spring-boot-starter-test')
