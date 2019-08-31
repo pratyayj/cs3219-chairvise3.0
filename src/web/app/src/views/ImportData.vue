@@ -256,7 +256,6 @@
                 //author anonymization
                 //console.log(res2);
            }
-          console.log(res2);
             this.$store.commit("setUploadedFile",res2);
             this.$store.commit("setPageLoadingStatus", false);
           }.bind(this)
