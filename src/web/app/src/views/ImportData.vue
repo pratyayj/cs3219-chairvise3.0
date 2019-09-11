@@ -107,7 +107,10 @@
   import {REVIEW_DATE_DAY_FIELD, REVIEW_DATE_TIME_FIELD, REVIEW_TABLE_ID} from "@/common/const"
   import {deepCopy} from "@/common/utility"
   import PredefinedMappings from "@/store/data/predefinedMapping"
-  import moment from "moment"
+  import dayjs from "dayjs"
+  import customParseFormat from "dayjs/plugin/customParseFormat"
+
+  dayjs.extend(customParseFormat)
 
   export default {
     name: "ImportData",
@@ -301,7 +304,7 @@
 
               for (var l = 1; l < res2.length; l++) {
                 var y = res2[l];
-                var dt = moment(y[10], "D MMM YYYY HH:mm:ss").format("YYYY-M-D H:m");
+                var dt = dayjs(y[10], "D MMM YYYY HH:mm:ss").format("YYYY-M-D H:m");
                 if(y[6].includes("Reject")){y[6]="reject";}
                 else {y[6]="accept";}
                 //console.log(x);

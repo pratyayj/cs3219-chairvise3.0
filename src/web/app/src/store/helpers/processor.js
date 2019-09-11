@@ -1,4 +1,7 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 function processDouble(raw) {
   if (!isNaN(parseFloat(raw))) {
@@ -61,7 +64,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
       // if date is selected, directly parse date as usual
       if (fieldType === "Date") {
         // TODO let user specify the format of the date instead of hardcoding
-        rawData = moment(rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
+        rawData = dayjs(rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
         if (rawData === "Invalid date") {
           throw "invalid date format";
         }
@@ -84,7 +87,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
 
       // then if date is complete, combine then together
       if (!usingDate && fieldType === "LocalDate" && localTime !== null) {
-        rawData = moment(rawData + " " + localTime, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
+        rawData = dayjs(rawData + " " + localTime, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
         if (rawData === "Invalid date") {
           throw "invalid date format";
         }
@@ -92,7 +95,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
       }
 
       if (!usingDate && fieldType === "LocalTime" && localDate !== null) {
-        rawData = moment(localDate + " " + rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
+        rawData = dayjs(localDate + " " + rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
         if (rawData === "Invalid date") {
           throw "invalid date format";
         }
