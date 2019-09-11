@@ -1,28 +1,61 @@
 <template>
-  <basic-section-detail :section-detail="sectionDetail" :presentation-id="presentationId" :has-data="hasData"
-                        :extraFormItemsRules="{}"
-                        @update-visualisation="updateVisualisation">
+  <basic-section-detail
+    :section-detail="sectionDetail"
+    :presentation-id="presentationId"
+    :has-data="hasData"
+    :extra-form-items-rules="{}"
+    @update-visualisation="updateVisualisation"
+  >
     <el-table
       :data="tableData"
-      style="width: 100%">
+      style="width: 100%"
+    >
       <el-table-column
         prop="type"
-        label="Type">
-      </el-table-column>
+        label="Type"
+      />
       <el-table-column
         prop="value"
-        label="Value">
-      </el-table-column>
+        label="Value"
+      />
     </el-table>
-    <template slot="extraFormItems" slot-scope="slotProps">
-      <el-form-item label="Type" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="type" v-model="slotProps.extraData.types" multiple>
-          <el-option label="Min" value="min"></el-option>
-          <el-option label="Max" value="max"></el-option>
-          <el-option label="Sum" value="sum"></el-option>
-          <el-option label="Average" value="avg"></el-option>
-          <el-option label="Median" value="median"></el-option>
-          <el-option label="Standard Deviation" value="std"></el-option>
+    <template
+      slot="extraFormItems"
+      slot-scope="slotProps"
+    >
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Type"
+      >
+        <el-select
+          v-model="slotProps.extraData.types"
+          placeholder="type"
+          multiple
+        >
+          <el-option
+            label="Min"
+            value="min"
+          />
+          <el-option
+            label="Max"
+            value="max"
+          />
+          <el-option
+            label="Sum"
+            value="sum"
+          />
+          <el-option
+            label="Average"
+            value="avg"
+          />
+          <el-option
+            label="Median"
+            value="median"
+          />
+          <el-option
+            label="Standard Deviation"
+            value="std"
+          />
         </el-select>
       </el-form-item>
     </template>
@@ -35,6 +68,10 @@
 
   export default {
     name: "StatsSectionDetail",
+
+    components: {
+      BasicSectionDetail,
+    },
 
     props: {
       sectionDetail: {
@@ -108,10 +145,6 @@
           }
         })
       }
-    },
-
-    components: {
-      BasicSectionDetail,
     }
   }
 </script>

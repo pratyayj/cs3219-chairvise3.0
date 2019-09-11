@@ -2,12 +2,15 @@
   <div>
     <div>
       <el-container>
-        <el-aside width="250px" v-if="isLogin">
-          <list-of-presentation/>
+        <el-aside
+          v-if="isLogin"
+          width="250px"
+        >
+          <list-of-presentation />
         </el-aside>
         <el-main>
-          <presentation-brief :id="id"/>
-          <section-list-panel :presentationId="id"/>
+          <presentation-brief :id="id" />
+          <section-list-panel :presentation-id="id" />
         </el-main>
       </el-container>
     </div>
@@ -15,15 +18,23 @@
 </template>
 
 <script>
-  import ChartJsPluginDataLabels from 'chartjs-plugin-datalabels';
+  import 'chartjs-plugin-datalabels';
   import ListOfPresentation from '@/components/ListOfPresentation.vue'
   import PresentationBrief from "@/components/PresentationBrief.vue";
   import SectionListPanel from "@/components/SectionListPanel.vue";
 
   export default {
     name: 'Analyze',
+    components: {
+      PresentationBrief,
+      ListOfPresentation,
+      SectionListPanel,
+    },
     props: {
-      id: String,
+      id: {
+        type: String,
+        required: true
+      }
     },
     computed: {
       isLogin() {
@@ -32,12 +43,6 @@
       isAppLoading() {
         return this.$store.state.isPageLoading
       }
-    },
-    components: {
-      PresentationBrief,
-      ListOfPresentation,
-      SectionListPanel,
-      ChartJsPluginDataLabels
     }
   }
 </script>

@@ -1,15 +1,28 @@
 <template>
-  <el-row :gutter="20" class="map-container">
+  <el-row
+    :gutter="20"
+    class="map-container"
+  >
     <!-- left part of the page -->
-    <el-col :span="10" :offset="1" class="map-area">
+    <el-col
+      :span="10"
+      :offset="1"
+      class="map-area"
+    >
       <!-- db fields -->
       <div class="db-tags">
         <h3>Database fields</h3>
-        <transition-group name="tags-group" tag="div">
-          <div class="tag" v-for="(item, idx) in dbList.fieldMetaDataList"
-               v-bind:key="idx"
-               v-bind:class="[ idx === selectedDBTag ? 'active' : '', mappedDBTag.includes(idx) ? 'hidden' : '' ]"
-               v-on:click="dbTagClicked(idx)">
+        <transition-group
+          name="tags-group"
+          tag="div"
+        >
+          <div
+            v-for="(item, idx) in dbList.fieldMetaDataList"
+            :key="idx"
+            class="tag"
+            :class="[ idx === selectedDBTag ? 'active' : '', mappedDBTag.includes(idx) ? 'hidden' : '' ]"
+            @click="dbTagClicked(idx)"
+          >
             {{ item.name }}
           </div>
         </transition-group>
@@ -19,11 +32,17 @@
       <!-- imported tags -->
       <div class="import-tags">
         <h3>Imported data fields</h3>
-        <transition-group name="tags-group" tag="div">
-          <div class="tag" v-for="(item, idx) in importList"
-               v-bind:key="idx"
-               v-bind:class="[ idx === selectedImportTag ? 'active' : '', mappedImportTag.includes(idx) ? 'hidden' : '' ]"
-               v-on:click="importTagClicked(idx)">
+        <transition-group
+          name="tags-group"
+          tag="div"
+        >
+          <div
+            v-for="(item, idx) in importList"
+            :key="idx"
+            class="tag"
+            :class="[ idx === selectedImportTag ? 'active' : '', mappedImportTag.includes(idx) ? 'hidden' : '' ]"
+            @click="importTagClicked(idx)"
+          >
             {{ item }}
           </div>
         </transition-group>
@@ -33,8 +52,20 @@
       <!-- button group -->
       <el-row class="button-row">
         <el-col>
-          <el-button class="back-button" type="info" v-on:click="backClicked">Back</el-button>
-          <el-button class="back-button" type="success" v-on:click="uploadClicked">Upload</el-button>
+          <el-button
+            class="back-button"
+            type="info"
+            @click="backClicked"
+          >
+            Back
+          </el-button>
+          <el-button
+            class="back-button"
+            type="success"
+            @click="uploadClicked"
+          >
+            Upload
+          </el-button>
         </el-col>
       </el-row>
       <!-- end of button group -->
@@ -42,20 +73,41 @@
     <!-- end of left part of the page -->
 
     <!-- right part of the page -->
-    <el-col :span="12" class="map-result">
+    <el-col
+      :span="12"
+      class="map-result"
+    >
       <h3>Mapping</h3>
-      <transition-group name="map-group" tag="div">
-        <div class="pair-tag" v-for="(item, index) in mappedPairs" v-bind:key="index">
-          <el-tag size="medium">{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
+      <transition-group
+        name="map-group"
+        tag="div"
+      >
+        <div
+          v-for="(item, index) in mappedPairs"
+          :key="index"
+          class="pair-tag"
+        >
+          <el-tag size="medium">
+            {{ dbList.fieldMetaDataList[item[0]].type }}
+          </el-tag>
           <p class="pair-info">
             {{ dbList.fieldMetaDataList[item[0]].name }}
-            <i class="el-icon-caret-right"></i>
+            <i class="el-icon-caret-right" />
             {{ importList[item[1]] }}
-          </p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
+          </p><i
+            class="el-icon-close"
+            @click="removeMapClicked(index)"
+          /><br>
         </div>
       </transition-group>
-      <transition name="fade" mode="out-in">
-        <div class="no-map-info" v-show="mappedPairs.length === 0">
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <div
+          v-show="mappedPairs.length === 0"
+          class="no-map-info"
+        >
           <p>No mapping specified!</p>
         </div>
       </transition>
@@ -66,20 +118,36 @@
     <el-dialog
       title="Confirm"
       :visible.sync="hasSubmitted"
-      width="30%" center>
+      width="30%"
+      center
+    >
       <span>After submission, your will not be able to modify your mapping. Are you sure that the columns are correctly mapped?</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button v-on:click="hasSubmitted = false">Cancel</el-button>
-        <el-button type="primary" v-on:click="submitMapping">Confirm</el-button>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="hasSubmitted = false">Cancel</el-button>
+        <el-button
+          type="primary"
+          @click="submitMapping"
+        >Confirm</el-button>
       </span>
     </el-dialog>
     <el-dialog
       title="Success"
       :visible.sync="uploadSuccess"
-      width="30%" center>
+      width="30%"
+      center
+    >
       <span>You have successfully imported data using the column mapping!</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" v-on:click="closeSuccess">Sure</el-button>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="closeSuccess"
+        >Sure</el-button>
       </span>
     </el-dialog>
     <!-- end of dialogs -->
@@ -156,6 +224,10 @@
         }
       }
     },
+    mounted() {
+    },
+    updated() {
+    },
     methods: {
       dbTagClicked: function (idx) {
         if (idx === this.selectedDBTag) {
@@ -218,10 +290,6 @@
         this.$store.commit("clearError");
         this.$store.commit("clearPredefinedMapping");
       }
-    },
-    mounted() {
-    },
-    updated() {
     }
   };
 </script>

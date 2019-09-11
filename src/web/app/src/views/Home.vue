@@ -3,13 +3,13 @@
     <div>
       <el-container>
         <el-aside>
-          <ListOfGuide/>
+          <ListOfGuide />
         </el-aside>
         <el-main>
-          <WelcomeMessage/>
-          <FeatureGuide/>
-          <br/>
-          <DetailedFeatureGuide/>
+          <WelcomeMessage />
+          <FeatureGuide />
+          <br>
+          <DetailedFeatureGuide />
         </el-main>
       </el-container>
     </div>
@@ -24,7 +24,7 @@
   import ListOfGuide from '@/components/homePageDetail/ListOfGuide.vue'
 
   export default {
-    name: 'home',
+    name: 'Home',
     components: {
       WelcomeMessage,
       FeatureGuide,

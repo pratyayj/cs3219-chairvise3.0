@@ -1,36 +1,110 @@
 <template>
-  <el-alert v-if="isNewPresentation && !isLogin" title="Please login to create new presentation" type="error" show-icon
-            class="errorMsg"/>
-  <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules"
-           :model="presentationForm" v-loading="isLoading">
-    <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg"/>
-    <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
-      <div v-if="!isInEditMode">{{ presentationForm.name }}</div>
-      <el-input v-model="presentationFormName" v-if="isInEditMode"/>
+  <el-alert
+    v-if="isNewPresentation && !isLogin"
+    title="Please login to create new presentation"
+    type="error"
+    show-icon
+    class="errorMsg"
+  />
+  <el-form
+    v-else
+    ref="presentationForm"
+    v-loading="isLoading"
+    label-position="right"
+    label-width="120px"
+    :rules="rules"
+    :model="presentationForm"
+  >
+    <el-alert
+      v-if="isError"
+      :title="apiErrorMsg"
+      type="error"
+      show-icon
+      class="errorMsg"
+    />
+    <el-form-item
+      label="Name"
+      :prop=" isInEditMode ? 'name' : ''"
+    >
+      <div v-if="!isInEditMode">
+        {{ presentationForm.name }}
+      </div>
+      <el-input
+        v-if="isInEditMode"
+        v-model="presentationFormName"
+      />
     </el-form-item>
-    <el-form-item label="Access Control" v-if="!isNewPresentation">
+    <el-form-item
+      v-if="!isNewPresentation"
+      label="Access Control"
+    >
       <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
-      <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view"
-                 @click="openAccessControlPanel()" v-if="isLogin && isPresentationEditable">SHARE
+      <el-button
+        v-if="isLogin && isPresentationEditable"
+        type="success"
+        size="small"
+        class="share_button_left_margin"
+        icon="el-icon-view"
+        @click="openAccessControlPanel()"
+      >
+        SHARE
       </el-button>
     </el-form-item>
-    <el-dialog title="Share with other users:" :visible.sync="isAccessControlDialogVisible" width="70%"
-               :close-on-click-modal="false">
-      <access-control-panel :presentationId="id"></access-control-panel>
+    <el-dialog
+      title="Share with other users:"
+      :visible.sync="isAccessControlDialogVisible"
+      width="70%"
+      :close-on-click-modal="false"
+    >
+      <access-control-panel :presentation-id="id" />
     </el-dialog>
     <el-form-item label="Description">
-      <div v-if="!isInEditMode" id="presentation-description">{{ presentationForm.description }}</div>
-      <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
+      <div
+        v-if="!isInEditMode"
+        id="presentation-description"
+      >
+        {{ presentationForm.description }}
+      </div>
+      <el-input
+        v-if="isInEditMode"
+        v-model="presentationFormDescription"
+      />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="downloadPDF()" v-if="!isInEditMode && !isNewPresentation">Download as PDF
+      <el-button
+        v-if="!isInEditMode && !isNewPresentation"
+        type="primary"
+        @click="downloadPDF()"
+      >
+        Download as PDF
       </el-button>
-      <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode && isPresentationEditable">Edit
+      <el-button
+        v-if="!isInEditMode && isPresentationEditable"
+        type="primary"
+        @click="changeEditMode(true)"
+      >
+        Edit
       </el-button>
-      <el-button type="primary" @click="addPresentation()" v-if="isInEditMode">Save</el-button>
-      <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
-      <el-button type="danger" v-if="!isNewPresentation && isLogin && isPresentationEditable"
-                 @click="deletePresentation()">Delete
+      <el-button
+        v-if="isInEditMode"
+        type="primary"
+        @click="addPresentation()"
+      >
+        Save
+      </el-button>
+      <el-button
+        v-if="isInEditMode && !isNewPresentation"
+        type="info"
+        @click="changeEditMode(false)"
+      >
+        Cancel
+      </el-button>
+      <el-button
+        v-if="!isNewPresentation && isLogin && isPresentationEditable"
+        type="danger"
+        @click="deletePresentation()"
+      >
+        Delete
       </el-button>
     </el-form-item>
   </el-form>
@@ -44,16 +118,27 @@
 
   export default {
     name: 'PresentationBrief',
+
+    components: {
+      AccessControlPanel
+    },
     props: {
-      id: String
+      id: {
+        type: String,
+        required: true
+      }
     },
-    mounted() {
-      this.updatePresentationForm()
-    },
-    watch: {
-      'id'() {
-        this.updatePresentationForm()
-      },
+    data() {
+      return {
+        isEditing: false,
+        isAccessControlDialogVisible: false,
+        rules: {
+          name: [
+            {required: true, message: 'Please enter presentation name', trigger: 'blur'},
+            {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
+          ]
+        }
+      }
     },
     computed: {
       isLogin() {
@@ -111,17 +196,13 @@
         return this.$store.state.presentation.presentationFormStatus.apiErrorMsg
       }
     },
-    data() {
-      return {
-        isEditing: false,
-        isAccessControlDialogVisible: false,
-        rules: {
-          name: [
-            {required: true, message: 'Please enter presentation name', trigger: 'blur'},
-            {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
-          ]
-        }
-      }
+    watch: {
+      'id'() {
+        this.updatePresentationForm()
+      },
+    },
+    mounted() {
+      this.updatePresentationForm()
     },
     methods: {
       changeEditMode(isEditing) {
@@ -218,10 +299,6 @@
           });
         });
       }
-    },
-
-    components: {
-      AccessControlPanel
     },
   }
 </script>

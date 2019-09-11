@@ -1,25 +1,40 @@
 <template>
   <el-row class="sectionDetail">
     <div v-if="sectionDetail.type === WORD_CLOUD">
-      <word-cloud-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
+      <word-cloud-section-detail
+        :section-detail="sectionDetail"
+        :presentation-id="presentationId"
+      />
     </div>
     <div v-else-if="sectionDetail.type === BAR_CHART">
-      <bar-chart-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
+      <bar-chart-section-detail
+        :section-detail="sectionDetail"
+        :presentation-id="presentationId"
+      />
     </div>
     <div v-else-if="sectionDetail.type === PIE_CHART">
-      <pie-chart-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
+      <pie-chart-section-detail
+        :section-detail="sectionDetail"
+        :presentation-id="presentationId"
+      />
     </div>
     <div v-else-if="sectionDetail.type === LINE_CHART">
-      <line-chart-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
+      <line-chart-section-detail
+        :section-detail="sectionDetail"
+        :presentation-id="presentationId"
+      />
     </div>
     <div v-else-if="sectionDetail.type === STATS">
-      <stats-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
+      <stats-section-detail
+        :section-detail="sectionDetail"
+        :presentation-id="presentationId"
+      />
     </div>
     <div v-else>
       <el-alert
         :title="`Unexpected Section Detail Type: ${sectionDetail.type}`"
-        type="error">
-      </el-alert>
+        type="error"
+      />
     </div>
   </el-row>
 </template>
@@ -39,6 +54,13 @@
   } from "@/common/const";
 
   export default {
+    components: {
+      WordCloudSectionDetail,
+      BarChartSectionDetail,
+      PieChartSectionDetail,
+      LineChartSectionDetail,
+      StatsSectionDetail
+    },
     props: {
       sectionDetail: {
         type: Object,
@@ -58,13 +80,6 @@
         LINE_CHART: SECTION_TYPE_LINE_CHART,
         STATS: SECTION_TYPE_STATS
       }
-    },
-    components: {
-      WordCloudSectionDetail,
-      BarChartSectionDetail,
-      PieChartSectionDetail,
-      LineChartSectionDetail,
-      StatsSectionDetail
     }
   }
 </script>

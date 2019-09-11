@@ -1,12 +1,12 @@
 <template>
   <el-container v-loading.fullscreen.lock="isAppLoading">
     <el-header>
-      <menu-bar></menu-bar>
+      <menu-bar />
     </el-header>
     <el-main>
-      <router-view/>
+      <router-view />
     </el-main>
-    <el-footer></el-footer>
+    <el-footer />
   </el-container>
 </template>
 
@@ -14,6 +14,17 @@
   import MenuBar from '@/components/MenuBar.vue'
 
   export default {
+    components: {
+      'menu-bar': MenuBar,
+    },
+    computed: {
+      isAppLoading() {
+        return this.$store.state.isPageLoading
+      },
+      isFetchUserInfoError() {
+        return this.$store.state.userInfo.isApiError
+      }
+    },
     watch: {
       '$route'() {
         this.$store.dispatch('getAuthInfo');
@@ -27,17 +38,6 @@
           message: this.$store.state.userInfo.apiErrorMsg,
           duration: 0
         });
-      }
-    },
-    components: {
-      'menu-bar': MenuBar,
-    },
-    computed: {
-      isAppLoading() {
-        return this.$store.state.isPageLoading
-      },
-      isFetchUserInfoError() {
-        return this.$store.state.userInfo.isApiError
       }
     },
   }

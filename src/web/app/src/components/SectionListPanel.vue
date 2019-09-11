@@ -1,38 +1,64 @@
 <template>
   <div>
-    <el-row class="addRowRightAlign" v-if="isNewPresentation">
+    <el-row
+      v-if="isNewPresentation"
+      class="addRowRightAlign"
+    >
       <el-alert
         title="Please create presentation before adding sections"
         type="info"
-        show-icon>
-      </el-alert>
+        show-icon
+      />
     </el-row>
-    <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-if="!isNewPresentation">
-      <el-row class="addRowRightAlign" v-if="isLogin && isPresentationEditable">
-        <el-select v-model="selectedNewSection" placeholder="Please select a section to add" style="width: 300px"
-                   filterable>
+    <div
+      v-if="!isNewPresentation"
+      v-loading="isLoadingDBMetaData || isLoadingSectionList"
+    >
+      <el-row
+        v-if="isLogin && isPresentationEditable"
+        class="addRowRightAlign"
+      >
+        <el-select
+          v-model="selectedNewSection"
+          placeholder="Please select a section to add"
+          style="width: 300px"
+          filterable
+        >
           <el-option-group
             v-for="group in predefinedSections"
             :key="group.label"
-            :label="group.label">
+            :label="group.label"
+          >
             <el-option
               v-for="item in group.options"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            />
           </el-option-group>
         </el-select>
-        <el-button class="addButtonLeft" type="success" @click="addNewSection">Add New Section</el-button>
+        <el-button
+          class="addButtonLeft"
+          type="success"
+          @click="addNewSection"
+        >
+          Add New Section
+        </el-button>
       </el-row>
-      <br/>
+      <br>
       <el-alert
         v-if="isSectionListApiError"
         :title="sectionListApiErrorMsg"
-        type="error" show-icon>
-      </el-alert>
-      <abstract-section-detail class="presentation-section" v-for="section in sectionList" :sectionDetail="section"
-                               :key="section.id" :presentationId="presentationId"/>
+        type="error"
+        show-icon
+      />
+      <abstract-section-detail
+        v-for="section in sectionList"
+        :key="section.id"
+        class="presentation-section"
+        :section-detail="section"
+        :presentation-id="presentationId"
+      />
     </div>
   </div>
 </template>
@@ -43,11 +69,14 @@
   import PredefinedQueries from "@/store/data/predefinedQueries"
 
   export default {
-    props: {
-      presentationId: String,
+    components: {
+      AbstractSectionDetail
     },
-    watch: {
-      presentationId: 'fetchSectionList'
+    props: {
+      presentationId: {
+        type: String,
+        required: true
+      }
     },
     data() {
       return {
@@ -67,7 +96,7 @@
         let sectionOptionsGroup = {};
         // grouping the predefined queries
         for (let key in PredefinedQueries) {
-          if (!PredefinedQueries.hasOwnProperty(key)) {
+          if (!Object.prototype.hasOwnProperty.call(PredefinedQueries, key)) {
             continue;
           }
           let groupName = PredefinedQueries[key].group;
@@ -83,7 +112,7 @@
         // generate to format that element ui requires
         let sectionOptions = [];
         for (let groupName in sectionOptionsGroup) {
-          if (!sectionOptionsGroup.hasOwnProperty(groupName)) {
+          if (!Object.prototype.hasOwnProperty.call(sectionOptionsGroup, groupName)) {
             continue;
           }
           sectionOptions.push({
@@ -114,8 +143,8 @@
         return this.$store.state.dbMetaData.entitiesStatus.isLoading
       }
     },
-    components: {
-      AbstractSectionDetail
+    watch: {
+      presentationId: 'fetchSectionList'
     },
     mounted() {
       this.fetchSectionList();

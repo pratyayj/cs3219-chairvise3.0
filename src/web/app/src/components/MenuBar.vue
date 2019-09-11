@@ -1,14 +1,51 @@
 <template>
-  <el-menu mode="horizontal" router :default-active="menuDefaultActive">
-    <el-menu-item index="/home">Home</el-menu-item>
-    <el-menu-item index="/analyze" :disabled="!isLogin">Analyze</el-menu-item>
-    <el-menu-item index="/importData" :disabled="!isLogin">Import Data</el-menu-item>
-    <el-menu-item index="/logout" v-if="isLogin" @click="logout" v-loading.fullscreen.lock="isFullscreenLoading">
-      <el-button type="success" plain>Logout ({{ userNickname }})</el-button>
+  <el-menu
+    mode="horizontal"
+    router
+    :default-active="menuDefaultActive"
+  >
+    <el-menu-item index="/home">
+      Home
     </el-menu-item>
-    <el-menu-item index="/login" v-if="!isLogin" :disabled="isApiError" @click="login"
-                  v-loading.fullscreen.lock="isFullscreenLoading">
-      <el-button type="success" plain :disabled="isApiError">Login</el-button>
+    <el-menu-item
+      index="/analyze"
+      :disabled="!isLogin"
+    >
+      Analyze
+    </el-menu-item>
+    <el-menu-item
+      index="/importData"
+      :disabled="!isLogin"
+    >
+      Import Data
+    </el-menu-item>
+    <el-menu-item
+      v-if="isLogin"
+      v-loading.fullscreen.lock="isFullscreenLoading"
+      index="/logout"
+      @click="logout"
+    >
+      <el-button
+        type="success"
+        plain
+      >
+        Logout ({{ userNickname }})
+      </el-button>
+    </el-menu-item>
+    <el-menu-item
+      v-if="!isLogin"
+      v-loading.fullscreen.lock="isFullscreenLoading"
+      index="/login"
+      :disabled="isApiError"
+      @click="login"
+    >
+      <el-button
+        type="success"
+        plain
+        :disabled="isApiError"
+      >
+        Login
+      </el-button>
     </el-menu-item>
   </el-menu>
 </template>

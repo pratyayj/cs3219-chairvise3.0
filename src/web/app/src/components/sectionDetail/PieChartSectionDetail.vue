@@ -1,33 +1,64 @@
 <template>
-  <basic-section-detail :section-detail="sectionDetail" :presentation-id="presentationId" :has-data="hasData"
-                        :extraFormItemsRules="{}"
-                        @update-visualisation="updateVisualisation">
-    <pie-chart :chart-data="chartData" :options="options"></pie-chart>
+  <basic-section-detail
+    :section-detail="sectionDetail"
+    :presentation-id="presentationId"
+    :has-data="hasData"
+    :extra-form-items-rules="{}"
+    @update-visualisation="updateVisualisation"
+  >
+    <pie-chart
+      :chart-data="chartData"
+      :options="options"
+    />
 
-    <template slot="extraFormItems" slot-scope="slotProps">
-      <el-form-item label="Category Field Name" prop="extraData.categoryFieldName" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="categoryFieldName" v-model="slotProps.extraData.categoryFieldName">
+    <template
+      slot="extraFormItems"
+      slot-scope="slotProps"
+    >
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Category Field Name"
+        prop="extraData.categoryFieldName"
+      >
+        <el-select
+          v-model="slotProps.extraData.categoryFieldName"
+          placeholder="categoryFieldName"
+        >
           <el-option
             v-for="selection in slotProps.editForm.selections"
             :key="selection.rename"
             :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
+            :value="selection.rename"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="Value Field Name" prop="extraData.valueFieldName" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="valueFieldName" v-model="slotProps.extraData.valueFieldName">
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Value Field Name"
+        prop="extraData.valueFieldName"
+      >
+        <el-select
+          v-model="slotProps.extraData.valueFieldName"
+          placeholder="valueFieldName"
+        >
           <el-option
             v-for="selection in slotProps.editForm.selections"
             :key="selection.rename"
             :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
+            :value="selection.rename"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay"
-                    v-if="slotProps.isInAdvancedMode">
-        <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Num of result to display"
+        prop="extraData.numOfResultToDisplay"
+      >
+        <el-slider
+          v-model="slotProps.extraData.numOfResultToDisplay"
+          :min="5"
+          :max="30"
+        />
       </el-form-item>
     </template>
   </basic-section-detail>
@@ -40,6 +71,11 @@
 
   export default {
     name: "PieChartSectionDetail",
+
+    components: {
+      BasicSectionDetail,
+      PieChart
+    },
 
     props: {
       sectionDetail: {
@@ -130,11 +166,6 @@
           }
         }
       }
-    },
-
-    components: {
-      BasicSectionDetail,
-      PieChart
     }
   }
 </script>
