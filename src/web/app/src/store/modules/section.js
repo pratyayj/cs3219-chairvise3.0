@@ -174,10 +174,16 @@ export default {
         })
     },
 
-    async sendPreviewAnalysisRequest({commit}, {presentationId, id, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters}) {
+    async sendPreviewAnalysisRequest({commit}, {presentationId, id, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters, extraData}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
-      await axios.post(`/api/presentations/${presentationId}/analysis`, {
+      var urlQuery = "analysis";
+
+      if (extraData.hasOwnProperty("url")) {
+        urlQuery = extraData.url;
+      }
+
+      await axios.post(`/api/presentations/${presentationId}/` + urlQuery, {
         dataSet,
         selections,
         involvedRecords,
@@ -201,7 +207,13 @@ export default {
       let sectionToAnalysis = findSectionDetailById(state.sectionList, id);
       commit('setSectionDetailLoading', {id: sectionToAnalysis.id, isLoading: true});
 
-      await axios.post(`/api/presentations/${presentationId}/analysis`, {
+      var urlToQuery = "analysis";
+
+      if (sectionToAnalysis.extraData.hasOwnProperty("url")) {
+        urlToQuery = sectionToAnalysis.extraData.url;
+      }
+
+      await axios.post(`/api/presentations/${presentationId}/` + urlToQuery, {
         dataSet: sectionToAnalysis.dataSet,
         selections: sectionToAnalysis.selections,
         involvedRecords: sectionToAnalysis.involvedRecords,
