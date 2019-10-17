@@ -36,7 +36,7 @@ public class RecordLogic {
 
     @Transactional
     public void removeAndPersistAuthorRecordForDataSet(String dataSet, List<AuthorRecord> authorRecordList) {
-        authorRecordRepository.deleteAllByDataSetEquals(dataSet);
+        // authorRecordRepository.deleteAllByDataSetEquals(dataSet);
         authorRecordRepository.saveAll(authorRecordList.stream().peek(r -> {
             // should not set ID when creating records
             r.setId(null);
