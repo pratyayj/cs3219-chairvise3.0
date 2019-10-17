@@ -30,6 +30,32 @@
       </div>
       <!-- end of imported tags -->
 
+      <!-- record metadata group -->
+      <el-row>
+        <!-- TODO: add rules -->
+        <h3>Information about these records</h3>
+
+        <input type="radio" v-model="newOrExistingConference" id="new" value="new">
+        <label for="new">New Conference</label>
+        <input type="radio" v-model="newOrExistingConference" id="existing" value="existing">
+        <label for="existing">Existing Conference</label>
+
+        <!-- TODO: convert to v-if -->
+        <div v-show="newOrExistingConference === 'new'">
+          <h4>New Conference</h4>
+          <el-form label-position="right" ref="recordMetadataForm" label-width="70px"
+                   :model="recordMetadataForm">
+            <el-form-item label="Conference Name">
+              <el-input v-model="recordMetadataFormConferenceName" />
+            </el-form-item>
+            <el-form-item label="Year">
+              <el-input v-model="recordMetadataFormConferenceName" />
+            </el-form-item>
+          </el-form>
+        </div>
+        <div v-show="newOrExistingConference === 'existing'">Existing</div>
+      </el-row>
+
       <!-- button group -->
       <el-row class="button-row">
         <el-col>
@@ -105,7 +131,8 @@
           this.$store.state.dataMapping.data.uploadedLabel),
 
         hasSubmitted: false,
-        tableType: ""
+        tableType: "",
+        newOrExistingConference: ""
       };
     },
     computed: {
@@ -142,7 +169,27 @@
       // whether upload is successful
       uploadSuccess: function () {
         return this.$store.state.dataMapping.isUploadSuccess;
+      },
+
+      recordMetadataForm() {
+        return {
+          conferenceName: this.recordMetadataFormConferenceName,
+          // TODO: fill in other fields
+        }
+      },
+      recordMetadataFormConferenceName: {
+        get() {
+          return this.$store.state.recordMetadata.recordMetadataForm.conferenceName;
+        },
+        set(value) {
+          this.$store.commit('setRecordMetadataFormField', {
+            field: 'conferenceName',
+            value
+          })
+        }
       }
+
+
     },
 
     // display errors
