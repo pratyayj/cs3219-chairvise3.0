@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
+import sg.edu.nus.comp.cs3219.viz.common.entity.RecordMetadata;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
+import sg.edu.nus.comp.cs3219.viz.common.entity.recordwrappers.AuthorRecordWrapper;
 import sg.edu.nus.comp.cs3219.viz.logic.GateKeeper;
 import sg.edu.nus.comp.cs3219.viz.logic.RecordLogic;
 
@@ -28,11 +30,13 @@ public class RecordController extends BaseRestController {
     }
 
     @PostMapping("/record/author")
-    public ResponseEntity<?> importAuthorRecord(@RequestBody List<AuthorRecord> authorRecordList) throws URISyntaxException {
+    public ResponseEntity<?> importAuthorRecord(@RequestBody AuthorRecordWrapper authorRecordWrapper) throws URISyntaxException {
         UserInfo userInfo = gateKeeper.verifyLoginAccess();
+        RecordMetadata recordMetadata = this.recordLogic.saveRecordMetadataForDataSet(userInfo.getUserEmail(), authorRecordWrapper.recordMetadata, "author");
 
-        this.recordLogic.removeAndPersistAuthorRecordForDataSet(userInfo.getUserEmail(), authorRecordList);
-
+        this.recordLogic.removeAndPersistAuthorRecordForDataSet(userInfo.getUserEmail(), authorRecordWrapper.authorRecordList, recordMetadata.getId());
+        // TODO: enumerate record type
+        System.out.println(authorRecordWrapper.recordMetadata.getConferenceName());
         return ResponseEntity.created(new URI("/record/author")).build();
     }
 

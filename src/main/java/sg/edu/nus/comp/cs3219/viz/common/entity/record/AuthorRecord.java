@@ -24,6 +24,17 @@ public class AuthorRecord {
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
+    @Column(name = "recordmetadata_id")
+    private Long recordMetadataId;
+
+    public Long getRecordMetadataId() {
+        return recordMetadataId;
+    }
+
+    public void setRecordMetadataId(Long recordMetadataId) {
+        this.recordMetadataId = recordMetadataId;
+    }
+
     @Exportable(name = "Submission Id", nameInDB = "a_submission_id")
     @Column(name = "a_submission_id")
     private String submissionId;
