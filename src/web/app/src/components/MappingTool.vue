@@ -49,7 +49,7 @@
               <el-input v-model="recordMetadataFormConferenceName" />
             </el-form-item>
             <el-form-item label="Year">
-              <el-input v-model="recordMetadataFormConferenceName" />
+              <el-input v-model="recordMetadataFormConferenceYear" />
             </el-form-item>
           </el-form>
         </div>
@@ -174,6 +174,7 @@
       recordMetadataForm() {
         return {
           conferenceName: this.recordMetadataFormConferenceName,
+          conferenceYear: this.recordMetadataFormConferenceYear,
           // TODO: fill in other fields
         }
       },
@@ -184,6 +185,17 @@
         set(value) {
           this.$store.commit('setRecordMetadataFormField', {
             field: 'conferenceName',
+            value
+          })
+        }
+      },
+      recordMetadataFormConferenceYear: {
+        get() {
+          return this.$store.state.recordMetadata.recordMetadataForm.conferenceYear;
+        },
+        set(value) {
+          this.$store.commit('setRecordMetadataFormField', {
+            field: 'conferenceYear',
             value
           })
         }
@@ -245,6 +257,8 @@
       },
       uploadClicked: function () {
         let map = deepCopy(this.mappedPairs);
+        let form = deepCopy(this.recordMetadataForm)
+        // this.$store.commit("setRecordMetadataForm", {"recordMetadataForm": form})
         this.$store.commit("setMapping", {"map": map});
         if (this.errors.length === 0) {
           this.hasSubmitted = true;

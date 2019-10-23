@@ -5,7 +5,8 @@ import {deepCopy} from "@/common/utility"
 export default {
     state: {
         recordMetadataForm: {
-            conferenceName: ''
+            conferenceName: 'default',
+            conferenceYear: 1970,
         }
     },
     mutations: {
