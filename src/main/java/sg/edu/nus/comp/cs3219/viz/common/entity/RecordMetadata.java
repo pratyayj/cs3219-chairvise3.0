@@ -42,4 +42,36 @@ public class RecordMetadata {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getConferenceName() {
+        return conferenceName;
+    }
+
+    public void setConferenceName(String conferenceName) {
+        this.conferenceName = conferenceName;
+    }
+
+    public String getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
+    }
+
+    public int getConferenceYear() {
+        return conferenceYear;
+    }
+
+    public void setConferenceYear(int conferenceYear) {
+        this.conferenceYear = conferenceYear;
+    }
+
+    public String getDataSet() {
+        return dataSet;
+    }
+
+    public void setDataSet(String dataSet) {
+        this.dataSet = dataSet;
+    }
 }
