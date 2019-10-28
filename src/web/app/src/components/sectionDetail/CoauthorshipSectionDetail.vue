@@ -7,11 +7,10 @@
     :edit-form-involved-records-rule="editFormInvolvedRecordsRule"
     :edit-form-filters-rule="editFormFiltersRule"
     :edit-form-groupers-rule="editFormGroupersRule"
-    :edit-form-sorters-rule="editFormSortersRule"
     :extra-form-items-rules="extraFormItemsRules"
     @update-visualisation="updateVisualisation"
   >
-      <bar-chart
+      <ForceDirectedGraph
         :chart-data="chartData"
         :options="options"
       />
@@ -130,7 +129,7 @@
 </template>
 
 <script>
-    import BarChart from '@/components/sectionDetail/chart/BarChart.vue'
+    import ForceDirectedGraph from '@/components/sectionDetail/chart/ForceDirectedGraph'
     import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
     import {generateBorderColor, generateBackgroundColor} from '@/common/color'
 
@@ -139,7 +138,7 @@
 
         components: {
             BasicSectionDetail,
-            BarChart
+            ForceDirectedGraph
         },
 
         props: {
@@ -182,15 +181,6 @@
                     },
                     trigger: 'blur',
                 }],
-                editFormSortersRule: [{
-                    validator: (rule, value, callback) => {
-                        if (value.field.length === 0 || value.order.length === 0) {
-                            return callback(new Error('Please specify all fields'))
-                        }
-                        callback();
-                    },
-                    trigger: 'blur',
-                }],
                 editFormGroupersRule: [],
 
                 extraFormItemsRules: {
@@ -215,7 +205,7 @@
 
         computed: {
             hasData() {
-                return this.labels.length !== 0;
+                return true;
             },
 
             chartData() {
@@ -228,78 +218,7 @@
 
         methods: {
             updateVisualisation({result, extraData}) {
-                this.partialResult = result.slice(0, extraData.numOfResultToDisplay);
-                // process x axis
-                this.labels = this.partialResult.map(record => record[extraData.xAxisFieldName]);
-
-                // process y axis
-                this.dataset = {
-                    borderWidth: 1,
-                    label: extraData.dataSetLabel,
-                    data: this.partialResult.map(record => record[extraData.yAxisFieldName]),
-                    backgroundColor: generateBackgroundColor(this.partialResult.length),
-                    borderColor: generateBorderColor(this.partialResult.length),
-                };
-
-                // generate color
-                if (extraData.isColorfulBar) {
-                    this.dataset.backgroundColor = generateBackgroundColor(this.partialResult.length);
-                    this.dataset.borderColor = generateBorderColor(this.partialResult.length);
-                } else {
-                    // choose a color in random
-                    this.dataset.backgroundColor = generateBackgroundColor(this.partialResult.length)[this.partialResult.length - 1];
-                    this.dataset.borderColor = generateBorderColor(this.partialResult.length)[this.partialResult.length - 1];
-                }
-
-                // to display more data
-                let toolTipFooterCallback = (tooltipItems) => {
-                    let currentIndex = tooltipItems[0].index;
-                    return extraData.fieldsShownInToolTips.map(f => `${f.label}: ${this.partialResult[currentIndex][f.field]}`);
-                };
-
-                // process tooltip callback
-                this.options = {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            gridLines: {
-                                display: true
-                            }
-                        }],
-                        xAxes: [{
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                autoSkip: false
-                            }
-                        }]
-                    },
-                    legend: {
-                        display: true,
-                        position: 'bottom'
-                    },
-                    layout: {
-                        padding: {
-                            top: 30,
-                        }
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    tooltips: {
-                        callbacks: {
-                            footer: toolTipFooterCallback
-                        }
-                    },
-                    plugins: {
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end'
-                        }
-                    }
-                }
+                this.labels = result;
             },
 
             addTooltip(tooltips) {
