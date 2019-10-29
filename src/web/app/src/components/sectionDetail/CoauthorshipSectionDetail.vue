@@ -9,20 +9,18 @@
     :edit-form-groupers-rule="editFormGroupersRule"
     @update-visualisation="updateVisualisation"
   >
-      <ForceDirectedGraph
-        :chart-data="chartData"
-        :options="options"
-      />
+    <ForceDirectedGraph
+      :chart-data="chartData"
+      :options="options"
+    />
 
-      <template
-        slot="extraFormItems"
-        slot-scope="slotProps"
-      >
-          <template v-if="slotProps.isInAdvancedMode">
-          </template>
-          <el-form-item v-if="slotProps.isInAdvancedMode">
-          </el-form-item>
-      </template>
+    <template
+      slot="extraFormItems"
+      slot-scope="slotProps"
+    >
+      <template v-if="slotProps.isInAdvancedMode" />
+      <el-form-item v-if="slotProps.isInAdvancedMode" />
+    </template>
   </basic-section-detail>
 </template>
 

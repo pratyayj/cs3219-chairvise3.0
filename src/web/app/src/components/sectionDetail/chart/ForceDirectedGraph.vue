@@ -1,6 +1,9 @@
 <template>
   <div>
-    <svg width="800" height="500"></svg>
+    <svg
+      width="800"
+      height="500"
+    />
   </div>
 </template>
 
@@ -14,6 +17,15 @@
         required: true
       },
     },
+   watch: {
+    chartData() {
+     if(this.$el.querySelector("svg").children.length > 0) {
+      console.log(this.$el.querySelector("svg").children[0].remove());
+     }
+     console.log(this.chartData);
+     this.handleVisualisation();
+    }
+   },
     methods: {
      handleVisualisation() {
       var svg = d3.select(this.$el.querySelector("svg")),
@@ -44,14 +56,14 @@
        .force("center_force", center_force)
        .force("links",link_force);
 
-//add tick instructions:
+      //add tick instructions:
       simulation.on("tick", tickActions );
 
-//add encompassing group for the zoom
+      //add encompassing group for the zoom
       var g = svg.append("g")
        .attr("class", "everything");
 
-//draw lines for the links
+      //draw lines for the links
       var link = g.append("g")
        .attr("class", "links")
        .selectAll("line")
@@ -60,7 +72,7 @@
        .attr("stroke-width", 2)
        .style("stroke", linkColour);
 
-//draw circles for the nodes
+      //draw circles for the nodes
       var node = g.append("g")
        .attr("class", "nodes")
        .selectAll("circle")
@@ -70,6 +82,7 @@
        .attr("r", radius)
        .attr("fill", circleColour);
 
+      //draw text near the nodes
       var text = g.selectAll("text")
        .data(nodes_data)
        .enter().append("text")
@@ -78,7 +91,7 @@
        .text(function(d) { return d.name.substring(0, 3); });
 
 
-//add drag capabilities
+      //add drag capabilities
       var drag_handler = d3.drag()
        .on("start", drag_start)
        .on("drag", drag_drag)
@@ -87,7 +100,7 @@
       drag_handler(node);
 
 
-//add zoom capabilities
+      //add zoom capabilities
       var zoom_handler = d3.zoom().interpolate(d3.interpolateZoom)
        .on("zoom", zoom_actions);
 
@@ -95,8 +108,7 @@
 
       /** Functions **/
 
-//Function to choose what color circle we have
-//Let's return blue for males and red for females
+      //Function to choose what color circle we have
       function circleColour(d){
        if(d.type ==="article"){
         return "blue";
@@ -105,9 +117,7 @@
        }
       }
 
-//Function to choose the line colour and thickness
-//If the link type is "A" return green
-//If the link type is "E" return red
+      //Function to choose the line colour and thickness
       function linkColour(d){
        if(d.type === "accept"){
         return "green";
@@ -116,15 +126,15 @@
        }
       }
 
-//Drag functions
-//d is the node
+      //Drag functions
+      //d is the node
       function drag_start(d) {
        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
        d.fx = d.x;
        d.fy = d.y;
       }
 
-//make sure you can't drag the circle outside the box
+      //make sure you can't drag the circle outside the box
       function drag_drag(d) {
        d.fx = d3.event.x;
        d.fy = d3.event.y;
@@ -136,22 +146,9 @@
        d.fy = null;
       }
 
-//Zoom functions
+      //Zoom functions
       function zoom_actions(){
-       /*var old = d3.event.transform.k;
-       console.log("Before: " + d3.event.transform);
-       if (d3.event.transform.k < current_zoom) {
-         current_zoom *= zoom_modifier;
-         d3.event.transform.k = current_zoom;
-       } else if (d3.event.transform.k > current_zoom) {
-         current_zoom /= zoom_modifier;
-         d3.event.transform.k = current_zoom;
-       }
-       console.log("After: " + d3.event.transform);*/
-       //scale = d3.event.scale /2;
-       //zoom_handler.scale(scale);
        g.attr("transform", d3.event.transform)
-       //d3.event.transform.k = old;
       }
 
       function tickActions() {
@@ -173,16 +170,7 @@
         .attr("y", function(d) { return d.y; })
       }
      }
-    },
-   watch: {
-    chartData() {
-     if(this.$el.querySelector("svg").children.length > 0) {
-      console.log(this.$el.querySelector("svg").children[0].remove());
-     }
-     console.log(this.chartData);
-     this.handleVisualisation();
     }
-   }
   }
 </script>
 
