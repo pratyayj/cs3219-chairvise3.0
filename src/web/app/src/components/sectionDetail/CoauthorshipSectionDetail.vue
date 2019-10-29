@@ -131,7 +131,6 @@
 <script>
     import ForceDirectedGraph from '@/components/sectionDetail/chart/ForceDirectedGraph'
     import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
-    import {generateBorderColor, generateBackgroundColor} from '@/common/color'
 
     export default {
         name: "CoauthorshipSectionDetail",
@@ -219,6 +218,7 @@
         methods: {
             updateVisualisation({result, extraData}) {
                 this.labels = result;
+                this.options = extraData;
             },
 
             addTooltip(tooltips) {

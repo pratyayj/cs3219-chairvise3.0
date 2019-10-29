@@ -179,7 +179,7 @@ export default {
 
       var urlQuery = "analysis";
 
-      if (extraData.hasOwnProperty("url")) {
+      if (Object.prototype.hasOwnProperty.call(extraData, 'url')) {
         urlQuery = extraData.url;
       }
 
@@ -209,7 +209,7 @@ export default {
 
       var urlToQuery = "analysis";
 
-      if (sectionToAnalysis.extraData.hasOwnProperty("url")) {
+      if (Object.prototype.hasOwnProperty.call(sectionToAnalysis.extraData, 'url')) {
         urlToQuery = sectionToAnalysis.extraData.url;
       }
 

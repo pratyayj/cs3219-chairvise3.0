@@ -5,10 +5,7 @@
 </template>
 
 <script>
-  import mixins from 'vue-chartjs';
   import * as d3 from 'd3';
-
-  const {reactiveProp} = mixins;
 
   export default {
     props: {
@@ -29,9 +26,6 @@
       links_data = JSON.parse(JSON.stringify(links_data));
 
       var nodes_data = this.chartData.labels.nodes;
-
-      var zoom_modifier = 0.9;
-      var current_zoom = 1;
 
       //set up the simulation and add forces
       var simulation = d3.forceSimulation()
@@ -185,6 +179,7 @@
      if(this.$el.querySelector("svg").children.length > 0) {
       console.log(this.$el.querySelector("svg").children[0].remove());
      }
+     console.log(this.chartData);
      this.handleVisualisation();
     }
    }
