@@ -62,36 +62,38 @@ public class AnalysisController extends BaseRestController {
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        AnalysisRequest analysisRequest1 = new AnalysisRequest();
+        AnalysisRequest actualRequest = new AnalysisRequest();
 
-        PresentationSection.Record tables = new PresentationSection.Record();
+        /*PresentationSection.Record tables = new PresentationSection.Record();
         tables.setName("submission_record, submission_author_record, submission_record_author_set ");
         tables.setCustomized(true);
-        analysisRequest1.addInvolvedRecord(tables);
+        actualRequest.addInvolvedRecord(tables);*/
 
         PresentationSection.Joiner joinerRecord = new PresentationSection.Joiner();
         joinerRecord.setLeft("submission_record.s_id");
         joinerRecord.setRight("submission_record_author_set.submission_record_s_id");
-        analysisRequest1.addJoiner(joinerRecord);
+        actualRequest.addJoiner(joinerRecord);
         PresentationSection.Joiner joinerAuthor = new PresentationSection.Joiner();
         joinerAuthor.setLeft("submission_author_record.s_author_id");
         joinerAuthor.setRight("submission_record_author_set.author_set_s_author_id");
-            analysisRequest1.addJoiner(joinerAuthor);
+            actualRequest.addJoiner(joinerAuthor);
 
         PresentationSection.Selection source = new PresentationSection.Selection();
         source.setRename("source");
         source.setExpression("s_title");
-        analysisRequest1.addSelection(source);
+        actualRequest.addSelection(source);
         PresentationSection.Selection target = new PresentationSection.Selection();
         target.setRename("target");
         target.setExpression("s_author_name");
-        analysisRequest1.addSelection(target);
+        actualRequest.addSelection(target);
         PresentationSection.Selection type = new PresentationSection.Selection();
         type.setRename("type");
         type.setExpression("s_is_accepted");
-        analysisRequest1.addSelection(type);
+        actualRequest.addSelection(type);
 
-        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest1);
+        actualRequest.mergeWith(analysisRequest);
+
+        List<Map<String, Object>> result = analysisLogic.analyse(actualRequest);
 
         class Node {
             private String name;

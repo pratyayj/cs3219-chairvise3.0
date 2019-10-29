@@ -359,8 +359,8 @@ export default {
       selections: [],
       involvedRecords: [
         {
-          name: 'author_record',
-          customized: false,
+          name: 'submission_record, submission_author_record, submission_record_author_set',
+          customized: true,
         }
       ],
       filters: [],
