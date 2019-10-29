@@ -348,6 +348,40 @@ export default {
         }
     }
   },
+  "submission_co_authorship": {
+    name: "Co-authorship record",
+    group: 'Author Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Co-authorship record',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'Blue nodes represent articles, pink nodes represent people. A green line between a blue and a pink node indicates that corresponding paper was accepted, else a red line indicates rejection.',
+      selections: [],
+      involvedRecords: [
+        {
+          name: 'author_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdata"
+      }
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          stacked: true // this should be set to make the bars stacked
+        }],
+        yAxes: [{
+          stacked: true // this also..
+        }]
+      }
+    }
+  },
   /*
   "submission_rank_paper_author": {
     name: "Submission Rank Paper Author",

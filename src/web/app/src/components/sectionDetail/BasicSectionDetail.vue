@@ -607,6 +607,7 @@
             joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
             groupers: this.editForm.groupers.map(g => ({field: g})),
             sorters: this.editForm.sorters.map(s => Object.assign({}, s)),
+            extraData: this.editForm.extraData
           })
             .then(() => {
               this.$emit('update-visualisation', {

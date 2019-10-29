@@ -40,12 +40,20 @@ public class AnalysisRequest {
         this.selections = selections;
     }
 
+    public void addSelection(PresentationSection.Selection selection) {
+        this.selections.add(selection);
+    }
+
     public List<PresentationSection.Record> getInvolvedRecords() {
         return involvedRecords;
     }
 
     public void setInvolvedRecords(List<PresentationSection.Record> involvedRecords) {
         this.involvedRecords = involvedRecords;
+    }
+
+    public void addInvolvedRecord(PresentationSection.Record involvedRecord) {
+        this.involvedRecords.add(involvedRecord);
     }
 
     public List<PresentationSection.Filter> getFilters() {
@@ -56,12 +64,20 @@ public class AnalysisRequest {
         this.filters = filters;
     }
 
+    public void addFilter(PresentationSection.Filter filter) {
+        this.filters.add(filter);
+    }
+
     public List<PresentationSection.Joiner> getJoiners() {
         return joiners;
     }
 
     public void setJoiners(List<PresentationSection.Joiner> joiners) {
         this.joiners = joiners;
+    }
+
+    public void addJoiner(PresentationSection.Joiner joiner) {
+        this.joiners.add(joiner);
     }
 
     public List<PresentationSection.Grouper> getGroupers() {
@@ -72,11 +88,19 @@ public class AnalysisRequest {
         this.groupers = groupers;
     }
 
+    public void addGrouper(PresentationSection.Grouper grouper) {
+        this.groupers.add(grouper);
+    }
+
     public List<PresentationSection.Sorter> getSorters() {
         return sorters;
     }
 
     public void setSorters(List<PresentationSection.Sorter> sorters) {
         this.sorters = sorters;
+    }
+
+    public void addSorter(PresentationSection.Sorter sorter) {
+        this.sorters.add(sorter);
     }
 }

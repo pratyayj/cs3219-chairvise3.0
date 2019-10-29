@@ -30,6 +30,12 @@
         :presentation-id="presentationId"
       />
     </div>
+    <div v-else-if="sectionDetail.type === COAUTHORSHIP">
+      <coauthorship-section-detail
+        :section-detail="sectionDetail"
+        :presentation-id="presentationId"
+      />
+    </div>
     <div v-else>
       <el-alert
         :title="`Unexpected Section Detail Type: ${sectionDetail.type}`"
@@ -45,12 +51,14 @@
   import PieChartSectionDetail from "@/components/sectionDetail/PieChartSectionDetail.vue"
   import LineChartSectionDetail from "@/components/sectionDetail/LineChartSectionDetail.vue"
   import StatsSectionDetail from "@/components/sectionDetail/StatsSectionDetail.vue"
+  import CoauthorshipSectionDetail from "@/components/sectionDetail/CoauthorshipSectionDetail.vue"
   import {
     SECTION_TYPE_BAR_CHART,
     SECTION_TYPE_LINE_CHART,
     SECTION_TYPE_PIE_CHART,
     SECTION_TYPE_STATS,
-    SECTION_TYPE_WORD_CLOUD
+    SECTION_TYPE_WORD_CLOUD,
+    SECTION_TYPE_COAUTHORSHIP
   } from "@/common/const";
 
   export default {
@@ -59,6 +67,7 @@
       BarChartSectionDetail,
       PieChartSectionDetail,
       LineChartSectionDetail,
+      CoauthorshipSectionDetail,
       StatsSectionDetail
     },
     props: {
@@ -78,7 +87,8 @@
         BAR_CHART: SECTION_TYPE_BAR_CHART,
         PIE_CHART: SECTION_TYPE_PIE_CHART,
         LINE_CHART: SECTION_TYPE_LINE_CHART,
-        STATS: SECTION_TYPE_STATS
+        STATS: SECTION_TYPE_STATS,
+        COAUTHORSHIP: SECTION_TYPE_COAUTHORSHIP
       }
     }
   }
