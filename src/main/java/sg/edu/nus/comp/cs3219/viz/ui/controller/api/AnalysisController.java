@@ -62,38 +62,7 @@ public class AnalysisController extends BaseRestController {
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        AnalysisRequest actualRequest = new AnalysisRequest();
-
-        /*PresentationSection.Record tables = new PresentationSection.Record();
-        tables.setName("submission_record, submission_author_record, submission_record_author_set ");
-        tables.setCustomized(true);
-        actualRequest.addInvolvedRecord(tables);*/
-
-        PresentationSection.Joiner joinerRecord = new PresentationSection.Joiner();
-        joinerRecord.setLeft("submission_record.s_id");
-        joinerRecord.setRight("submission_record_author_set.submission_record_s_id");
-        actualRequest.addJoiner(joinerRecord);
-        PresentationSection.Joiner joinerAuthor = new PresentationSection.Joiner();
-        joinerAuthor.setLeft("submission_author_record.s_author_id");
-        joinerAuthor.setRight("submission_record_author_set.author_set_s_author_id");
-            actualRequest.addJoiner(joinerAuthor);
-
-        PresentationSection.Selection source = new PresentationSection.Selection();
-        source.setRename("source");
-        source.setExpression("s_title");
-        actualRequest.addSelection(source);
-        PresentationSection.Selection target = new PresentationSection.Selection();
-        target.setRename("target");
-        target.setExpression("s_author_name");
-        actualRequest.addSelection(target);
-        PresentationSection.Selection type = new PresentationSection.Selection();
-        type.setRename("type");
-        type.setExpression("s_is_accepted");
-        actualRequest.addSelection(type);
-
-        actualRequest.mergeWith(analysisRequest);
-
-        List<Map<String, Object>> result = analysisLogic.analyse(actualRequest);
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         class Node {
             private String name;

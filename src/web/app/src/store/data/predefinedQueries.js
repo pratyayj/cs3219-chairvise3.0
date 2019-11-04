@@ -356,7 +356,20 @@ export default {
       title: 'Co-authorship record',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       description: 'Blue nodes represent articles, pink nodes represent people. A green line between a blue and a pink node indicates that corresponding paper was accepted, else a red line indicates rejection.',
-      selections: [],
+      selections: [
+        {
+          expression: "s_title",
+          rename: 'source'
+        },
+        {
+          expression: "s_author_name",
+          rename: 'target'
+        },
+        {
+          expression: "s_is_accepted",
+          rename: 'type'
+        }
+      ],
       involvedRecords: [
         {
           name: 'submission_record, submission_author_record, submission_record_author_set',
@@ -364,21 +377,28 @@ export default {
         }
       ],
       filters: [],
-      joiners: [],
+      joiners: [
+        {
+          left: "submission_record.s_id",
+          right: "submission_record_author_set.submission_record_s_id",
+        },
+        {
+          left: "submission_author_record.s_author_id",
+          right: "submission_record_author_set.author_set_s_author_id",
+        }
+      ],
       groupers: [],
       sorters: [],
       extraData: {
-        "url": "coauthorshipdata"
-      }
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          stacked: true // this should be set to make the bars stacked
-        }],
-        yAxes: [{
-          stacked: true // this also..
-        }]
+        "url": "coauthorshipdata",
+        "nodes": {
+          "article": "blue",
+          "else": "pink"
+        },
+        "links": {
+          "accept": "green",
+          "else": "red"
+        }
       }
     }
   },
