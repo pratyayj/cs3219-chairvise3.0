@@ -1,8 +1,9 @@
 <template>
   <div>
     <svg
-      width="800"
+      width="100%"
       height="500"
+      viewbox="0 0 800 500"
     />
   </div>
 </template>
@@ -34,7 +35,7 @@
       var node_assignment = this.options.nodes;
       var link_assignment = this.options.links
       var svg = d3.select(this.$el.querySelector("svg")),
-       width = +svg.attr("width"),
+       width = 800,//+svg.attr("width"),
        height = +svg.attr("height");
 
       var radius = 15;
