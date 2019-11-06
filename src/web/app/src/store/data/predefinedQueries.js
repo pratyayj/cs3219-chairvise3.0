@@ -353,7 +353,7 @@ export default {
     group: 'Author Record',
     data: {
       type: 'coauthorship',
-      title: 'Co-authorship record',
+      title: 'Co-authorship Submission record',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       description: 'Blue nodes represent articles, pink nodes represent people. A green line between a blue and a pink node indicates that corresponding paper was accepted, else a red line indicates rejection.',
       selections: [
@@ -411,7 +411,7 @@ export default {
     group: 'Author Record',
     data: {
       type: 'coauthorship',
-      title: 'Co-authorship record',
+      title: 'Co-authorship Author record',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       description: 'All authors that have worked with another author on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise.',
       selections: [
@@ -464,7 +464,12 @@ export default {
         }
       ],
       groupers: [],
-      sorters: [],
+      sorters: [
+        {
+          field: 'submission_record.s_submission_time',
+          order: 'ASC',
+        }
+      ],
       extraData: {
         "url": "coauthorshipdata",
         "nodes": {
