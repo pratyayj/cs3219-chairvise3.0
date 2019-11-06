@@ -349,7 +349,7 @@ export default {
     }
   },
   "submission_co_authorship": {
-    name: "Co-authorship record",
+    name: "Co-authorship Submission record",
     group: 'Author Record',
     data: {
       type: 'coauthorship',
@@ -372,8 +372,12 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_record, submission_author_record, submission_record_author_set',
+          name: 'submission_author_record, submission_record_author_set',
           customized: true,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -394,6 +398,77 @@ export default {
         "nodes": {
           "article": "blue",
           "else": "pink"
+        },
+        "links": {
+          "accept": "green",
+          "else": "red"
+        }
+      }
+    }
+  },
+  "author_co_authorship": {
+    name: "Co-authorship Author record",
+    group: 'Author Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Co-authorship record',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'All authors that have worked with another author on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise.',
+      selections: [
+        {
+          expression: "second_sar.s_author_name",
+          rename: 'source'
+        },
+        {
+          expression: "submission_author_record.s_author_name",
+          rename: 'target'
+        },
+        {
+          expression: "s_is_accepted",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'submission_author_record, submission_record_author_set, submission_record_author_set AS `second_sras`, submission_author_record AS `second_sar`',
+          customized: true,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [
+        {
+          field: 'second_sar.s_author_id',
+          comparator: '!=',
+          value: 'submission_author_record.s_author_id'
+        }
+      ],
+      joiners: [
+        {
+          left: "submission_record.s_id",
+          right: "submission_record_author_set.submission_record_s_id",
+        },
+        {
+          left: "submission_author_record.s_author_id",
+          right: "submission_record_author_set.author_set_s_author_id",
+        },
+        {
+          left: "submission_record_author_set.submission_record_s_id",
+          right: "second_sras.submission_record_s_id",
+        },
+        {
+          left: "second_sar.s_author_id",
+          right: "second_sras.author_set_s_author_id",
+        }
+      ],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdata",
+        "nodes": {
+          "else": "blue"
         },
         "links": {
           "accept": "green",
