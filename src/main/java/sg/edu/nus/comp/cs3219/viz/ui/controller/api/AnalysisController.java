@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -76,11 +77,17 @@ public class AnalysisController extends BaseRestController {
                 }
                 return false;
             }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(this.name, this.type);
+            }
         }
 
         log.info("Analysis Result from query: " + result);
         // convert to map with key all in lower case
-        List<Map<String, Object>> links_data = result.stream().map(m -> {
+        List<Map<String, Object>> links_data = result.stream()
+                .filter(m -> !m.get("source").equals(m.get("target"))).map(m -> {
             Map<String, Object> map = new HashMap<>();
             m.forEach((k, v) -> map.put(k.toLowerCase(), v));
             return map;
