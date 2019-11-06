@@ -4,6 +4,7 @@ export const AccessLevel = Object.freeze({
 });
 
 export const ID_NEW_PRESENTATION = "__NEW__";
+export const ID_NEW_CONFERENCE = "__NEW__";
 
 export const SPECIAL_IDENTIFIER_PUBLIC = '%PUBLIC%';
 

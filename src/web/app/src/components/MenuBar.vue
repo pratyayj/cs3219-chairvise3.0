@@ -3,6 +3,7 @@
     <el-menu-item index="/home">Home</el-menu-item>
     <el-menu-item index="/analyze" :disabled="!isLogin">Analyze</el-menu-item>
     <el-menu-item index="/importData" :disabled="!isLogin">Import Data</el-menu-item>
+    <el-menu-item index="/conferenceList" :disabled="!isLogin">Conference List</el-menu-item>
     <el-menu-item index="/logout" v-if="isLogin" @click="logout" v-loading.fullscreen.lock="isFullscreenLoading">
       <el-button type="success" plain>Logout ({{ userNickname }})</el-button>
     </el-menu-item>
@@ -26,6 +27,10 @@
         // need to active the menu item if sub path is used. e.g. /analyze/new
         if (this.$route.path.includes('/analyze')) {
           return '/analyze'
+        }
+
+        if (this.$route.path.includes('/conferenceList')) {
+            return '/conferenceList'
         }
         return this.$route.path
       },

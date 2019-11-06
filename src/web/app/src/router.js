@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {ID_NEW_PRESENTATION} from "@/common/const";
+import {ID_NEW_CONFERENCE} from "@/common/const";
 
 Vue.use(Router);
 
@@ -42,6 +43,23 @@ export default new Router({
         title: 'Import Data Page'
       },
       component: () => import(/* webpackChunkName: "importData" */ './views/ImportData.vue')
+    },
+    {
+      path: '/conferenceList',
+      redirect: '/conferenceList/' + ID_NEW_CONFERENCE,
+      meta: {
+        title: 'New Conference List'
+      },
+      props: true
+    },
+    {
+      path: '/conferenceList/:id',
+      name: 'conferenceList',
+      meta: {
+        title: 'Conference List'
+      },
+      props: true,
+      component: () => import(/* webpackChunkName: "conferenceList" */ './views/ConferenceList.vue')
     },
     {
       path: '/',

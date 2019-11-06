@@ -1,8 +1,5 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
-import sg.edu.nus.comp.cs3219.viz.common.entity.record.Exportable;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,28 +9,20 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-@Exportable(name = "Record Metadata", nameInDB = "record_metadata")
 @Entity
-public class RecordMetadata {
+public class Conference {
 
     @Id
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
     @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
     @JsonSerialize(using = ToStringSerializer.class)
-    @Column(name = "rm_id")
     private Long id;
 
-    @Column(name = "data_set")
-    private String dataSet;
+    private String creatorIdentifier;
 
-    @Column(name = "rm_conference_name")
     private String conferenceName;
 
-    @Column(name = "rm_record_type")
-    private String recordType;
-
-    @Column(name = "rm_conference_year")
-    private int conferenceYear;
+    private String conferenceYear;
 
     public Long getId() {
         return id;
@@ -51,27 +40,19 @@ public class RecordMetadata {
         this.conferenceName = conferenceName;
     }
 
-    public String getRecordType() {
-        return recordType;
-    }
-
-    public void setRecordType(String recordType) {
-        this.recordType = recordType;
-    }
-
-    public int getConferenceYear() {
+    public String getConferenceYear() {
         return conferenceYear;
     }
 
-    public void setConferenceYear(int conferenceYear) {
+    public void setConferenceYear(String conferenceYear) {
         this.conferenceYear = conferenceYear;
     }
 
-    public String getDataSet() {
-        return dataSet;
+    public String getCreatorIdentifier() {
+        return creatorIdentifier;
     }
 
-    public void setDataSet(String dataSet) {
-        this.dataSet = dataSet;
+    public void setCreatorIdentifier(String creatorIdentifier) {
+        this.creatorIdentifier = creatorIdentifier;
     }
 }

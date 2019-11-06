@@ -129,7 +129,7 @@ export default {
   },
 
   actions: {
-    async persistMapping({commit, state, rootState}) {
+    async persistMapping({commit, state}) {
       commit("setPageLoadingStatus", true);
       let endpoint;
       switch (state.data.tableType) {
@@ -143,10 +143,7 @@ export default {
           endpoint = "submission";
           break;
       }
-      console.log(rootState.recordMetadata.recordMetadataForm);
-      await axios.post("/api/record/" + endpoint, {authorRecordWrapper: state.data.processedResult,
-        recordMetadata: rootState.recordMetadata.recordMetadataForm
-      })
+      await axios.post("/api/record/" + endpoint, {authorRecordWrapper: state.data.processedResult})
         .then(() => {
           commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", true);

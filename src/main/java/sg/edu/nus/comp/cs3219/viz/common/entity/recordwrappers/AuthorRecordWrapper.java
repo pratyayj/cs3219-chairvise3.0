@@ -1,6 +1,6 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.recordwrappers;
 
-import sg.edu.nus.comp.cs3219.viz.common.entity.RecordMetadata;
+import sg.edu.nus.comp.cs3219.viz.common.entity.Conference;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 
 import java.util.List;
@@ -13,14 +13,14 @@ public class AuthorRecordWrapper {
     public List<AuthorRecord> authorRecordList;
 
     @JsonProperty("recordMetadata")
-    public RecordMetadata recordMetadata;
+    public Conference conference;
 
-    public RecordMetadata getRecordMetadata() {
-        return recordMetadata;
+    public Conference getConference() {
+        return conference;
     }
 
-    public void setRecordMetadata(RecordMetadata recordMetadata) {
-        this.recordMetadata = recordMetadata;
+    public void setConference(Conference conference) {
+        this.conference = conference;
     }
 
     public List<AuthorRecord> getAuthorRecordList() {

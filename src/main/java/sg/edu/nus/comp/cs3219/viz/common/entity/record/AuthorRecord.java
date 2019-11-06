@@ -24,15 +24,15 @@ public class AuthorRecord {
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
-    @Column(name = "recordmetadata_id")
-    private Long recordMetadataId;
+    @Column(name = "conference_id")
+    private Long conferenceId;
 
-    public Long getRecordMetadataId() {
-        return recordMetadataId;
+    public Long getConferenceId() {
+        return conferenceId;
     }
 
-    public void setRecordMetadataId(Long recordMetadataId) {
-        this.recordMetadataId = recordMetadataId;
+    public void setConferenceId(Long conferenceId) {
+        this.conferenceId = conferenceId;
     }
 
     @Exportable(name = "Submission Id", nameInDB = "a_submission_id")

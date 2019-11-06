@@ -3,14 +3,13 @@ package sg.edu.nus.comp.cs3219.viz.logic;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
-import sg.edu.nus.comp.cs3219.viz.common.entity.RecordMetadata;
+import sg.edu.nus.comp.cs3219.viz.common.entity.Conference;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.AuthorRecordRepository;
-import sg.edu.nus.comp.cs3219.viz.storage.repository.RecordMetadataRepository;
+import sg.edu.nus.comp.cs3219.viz.storage.repository.ConferenceRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.ReviewRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.SubmissionAuthorRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.SubmissionRecordRepository;
@@ -28,27 +27,18 @@ public class RecordLogic {
 
     private ReviewRecordRepository reviewRecordRepository;
 
-    private RecordMetadataRepository recordMetadataRepository;
+    private ConferenceRepository conferenceRepository;
 
     public RecordLogic(AuthorRecordRepository authorRecordRepository,
                        SubmissionRecordRepository submissionRecordRepository,
                        SubmissionAuthorRecordRepository submissionAuthorRecordRepository,
                        ReviewRecordRepository reviewRecordRepository,
-                       RecordMetadataRepository recordMetadataRepository) {
+                       ConferenceRepository conferenceRepository) {
         this.authorRecordRepository = authorRecordRepository;
         this.submissionRecordRepository = submissionRecordRepository;
         this.submissionAuthorRecordRepository = submissionAuthorRecordRepository;
         this.reviewRecordRepository = reviewRecordRepository;
-        this.recordMetadataRepository = recordMetadataRepository;
-    }
-
-    @Transactional
-    public RecordMetadata saveRecordMetadataForDataSet(String dataSet, RecordMetadata recordMetadata, String recordType) {
-        RecordMetadata completeMetadata = recordMetadata;
-        completeMetadata.setDataSet(dataSet);
-        completeMetadata.setRecordType(recordType);
-        System.out.println("here");
-        return recordMetadataRepository.save(completeMetadata);
+        this.conferenceRepository = conferenceRepository;
     }
 
     @Transactional
@@ -59,7 +49,7 @@ public class RecordLogic {
             r.setId(null);
             // should set dataSet
             r.setDataSet(dataSet);
-            r.setRecordMetadataId(recordMetadataId);
+            // r.setRecordMetadataId(recordMetadataId);
             // the other field can be arbitrary
         }).collect(Collectors.toList()));
     }
