@@ -413,7 +413,7 @@ export default {
       type: 'coauthorship',
       title: 'Co-authorship Author record',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'All authors that have worked with another author on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise.',
+      description: 'All authors that have worked with another author on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise. Individual authors not shown.',
       selections: [
         {
           expression: "second_sar.s_author_name",
@@ -438,13 +438,7 @@ export default {
           customized: false,
         }
       ],
-      filters: [
-        {
-          field: 'second_sar.s_author_id',
-          comparator: '!=',
-          value: 'submission_author_record.s_author_id'
-        }
-      ],
+      filters: [],
       joiners: [
         {
           left: "submission_record.s_id",
@@ -471,7 +465,7 @@ export default {
         }
       ],
       extraData: {
-        "url": "coauthorshipdata",
+        "url": "coauthorshipdatasimilar",
         "nodes": {
           "else": "blue"
         },
