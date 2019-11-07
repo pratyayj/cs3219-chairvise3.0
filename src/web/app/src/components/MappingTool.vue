@@ -32,13 +32,13 @@
 
       <!-- conference selection group -->
       <h3>Conference</h3>
-      <el-select name="conference" id="selectedConference" class="form-control" tabindex="12"
+      <select name="conference" id="selectedConference" class="form-control" tabindex="12"
               @change="conferenceSelected($event)">
-        <el-option v-for="conference in conferences"
+        <option v-for="conference in conferences"
                 :key="conference.id"
                 :value="conference.id">{{ conference.conferenceName }}
-        </el-option>
-      </el-select>
+        </option>
+      </select>
 
       <!-- button group -->
       <el-row class="button-row">
