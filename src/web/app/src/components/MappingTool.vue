@@ -32,13 +32,14 @@
 
       <!-- conference selection group -->
       <h3>Conference</h3>
-      <select name="conference" id="selectedConference" class="form-control" tabindex="12"
-              @change="conferenceSelected($event)">
-        <option v-for="conference in conferences"
+      <el-select name="conference" id="selectedConference" class="form-control" tabindex="12"
+              v-model="selectedConference" placeholder="Conference Name">
+        <el-option v-for="conference in conferences"
                 :key="conference.id"
-                :value="conference.id">{{ conference.conferenceName }}
-        </option>
-      </select>
+                :label="conference.conferenceName"
+                :value="conference.id">
+        </el-option>
+      </el-select>
 
       <!-- button group -->
       <el-row class="button-row">
@@ -116,7 +117,7 @@
 
         hasSubmitted: false,
         tableType: "",
-        selectedConferenceId: ""
+        selectedConference: ""
       };
     },
     computed: {
@@ -157,7 +158,8 @@
 
       conferences: function() {
         return this.$store.state.conference.conferenceList;
-      }
+      },
+
     },
 
     // display errors
@@ -233,10 +235,6 @@
         this.$store.commit("clearError");
         this.$store.commit("clearPredefinedMapping");
       },
-      conferenceSelected: function(event) {
-        console.log(event.target.value);
-        this.selectedConferenceId = event.target.value;
-      }
     },
     mounted() {
       this.$store.dispatch('getConferenceList')
