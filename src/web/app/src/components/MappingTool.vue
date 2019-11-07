@@ -31,6 +31,14 @@
       <!-- end of imported tags -->
 
       <!-- conference selection group -->
+      <h3>Conference</h3>
+      <el-select name="conference" id="selectedConference" class="form-control" tabindex="12"
+              @change="conferenceSelected($event)">
+        <el-option v-for="conference in conferences"
+                :key="conference.id"
+                :value="conference.id">{{ conference.conferenceName }}
+        </el-option>
+      </el-select>
 
       <!-- button group -->
       <el-row class="button-row">
@@ -108,7 +116,7 @@
 
         hasSubmitted: false,
         tableType: "",
-        newOrExistingConference: ""
+        selectedConferenceId: ""
       };
     },
     computed: {
@@ -146,6 +154,10 @@
       uploadSuccess: function () {
         return this.$store.state.dataMapping.isUploadSuccess;
       },
+
+      conferences: function() {
+        return this.$store.state.conference.conferenceList;
+      }
     },
 
     // display errors
@@ -220,9 +232,14 @@
         this.$store.commit("clearMapping");
         this.$store.commit("clearError");
         this.$store.commit("clearPredefinedMapping");
+      },
+      conferenceSelected: function(event) {
+        console.log(event.target.value);
+        this.selectedConferenceId = event.target.value;
       }
     },
     mounted() {
+      this.$store.dispatch('getConferenceList')
     },
     updated() {
     }
