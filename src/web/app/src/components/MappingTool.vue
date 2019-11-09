@@ -32,14 +32,23 @@
 
       <!-- conference selection group -->
       <h3>Conference</h3>
-      <el-select name="conference" id="selectedConference" class="form-control" tabindex="12"
-              v-model="selectedConference" placeholder="Conference Name">
+      <p style="color:coral;font-size:14px">Please select a conference to check its existing records.</p>
+      <el-select name="conference" id="selectedConferenceId" class="form-control" tabindex="12"
+              v-model="selectedConferenceId" placeholder="Conference Name">
         <el-option v-for="conference in conferences"
                 :key="conference.id"
                 :label="conference.conferenceName"
                 :value="conference.id">
         </el-option>
       </el-select>
+
+      <p v-if="conferenceRecords.length === 0">There are no existing records for this conference.</p>
+      <p v-else>This conference already has the following records.</p>
+      <ul id="conferenceRecords">
+        <li v-for="conferenceRecord in conferenceRecords">
+          {{conferenceRecord.recordType}}
+        </li>
+      </ul>
 
       <!-- button group -->
       <el-row class="button-row">
@@ -117,7 +126,7 @@
 
         hasSubmitted: false,
         tableType: "",
-        selectedConference: ""
+        selectedConferenceId: ""
       };
     },
     computed: {
@@ -160,6 +169,10 @@
         return this.$store.state.conference.conferenceList;
       },
 
+      conferenceRecords: function() {
+        return this.$store.state.conferenceRecord.conferenceRecordList;
+      }
+
     },
 
     // display errors
@@ -171,6 +184,10 @@
             message: newValue.join("\n")
           });
         }
+      },
+      'selectedConferenceId'() {
+        console.log("here to dispatch")
+        this.$store.dispatch('getConferenceRecordList', this.selectedConferenceId)
       }
     },
     methods: {
@@ -216,6 +233,7 @@
       uploadClicked: function () {
         let map = deepCopy(this.mappedPairs);
         this.$store.commit("setMapping", {"map": map});
+        this.$store.commit("setSelectedConferenceId", this.selectedConferenceId);
         if (this.errors.length === 0) {
           this.hasSubmitted = true;
         }
@@ -234,10 +252,12 @@
         this.$store.commit("clearMapping");
         this.$store.commit("clearError");
         this.$store.commit("clearPredefinedMapping");
+        this.$store.commit("clearSelectedConferenceId");
       },
     },
     mounted() {
-      this.$store.dispatch('getConferenceList')
+      this.$store.dispatch('getConferenceList');
+      this.$store.commit('resetConferenceRecordList');
     },
     updated() {
     }
