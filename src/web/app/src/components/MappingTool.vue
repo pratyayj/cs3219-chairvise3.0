@@ -43,7 +43,7 @@
       </el-select>
 
       <p v-if="conferenceRecords.length === 0">There are no existing records for this conference.</p>
-      <p v-else>This conference already has the following records.</p>
+      <p v-else>This conference already has the following records:</p>
       <ul id="conferenceRecords">
         <li v-for="conferenceRecord in conferenceRecords">
           {{conferenceRecord.recordType}}
@@ -88,6 +88,8 @@
       :visible.sync="hasSubmitted"
       width="30%" center>
       <span>After submission, your will not be able to modify your mapping. Are you sure that the columns are correctly mapped?</span>
+      <br>
+      <span style="color:red"> Note also that if there is existing data of this type, it will be overwritten with the data you are uploading now.</span>
       <span slot="footer" class="dialog-footer">
         <el-button v-on:click="hasSubmitted = false">Cancel</el-button>
         <el-button type="primary" v-on:click="submitMapping">Confirm</el-button>
@@ -186,7 +188,6 @@
         }
       },
       'selectedConferenceId'() {
-        console.log("here to dispatch")
         this.$store.dispatch('getConferenceRecordList', this.selectedConferenceId)
       }
     },

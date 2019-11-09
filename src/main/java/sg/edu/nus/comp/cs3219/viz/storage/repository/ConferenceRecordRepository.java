@@ -11,4 +11,6 @@ public interface ConferenceRecordRepository extends JpaRepository<ConferenceReco
 
     List<ConferenceRecord> findConferenceRecordsByConference(Conference conference);
 
+    void deleteConferenceRecordByConference(Conference conference);
+
 }

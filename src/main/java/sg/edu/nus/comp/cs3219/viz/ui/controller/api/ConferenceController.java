@@ -5,6 +5,7 @@ import sg.edu.nus.comp.cs3219.viz.common.entity.Conference;
 import sg.edu.nus.comp.cs3219.viz.common.exception.ConferenceNotFoundException;
 import sg.edu.nus.comp.cs3219.viz.logic.ConferenceLogic;
 import sg.edu.nus.comp.cs3219.viz.logic.GateKeeper;
+import sg.edu.nus.comp.cs3219.viz.logic.RecordLogic;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.*;
 public class ConferenceController extends BaseRestController {
 
     private final ConferenceLogic conferenceLogic;
+    private final RecordLogic recordLogic;
 
     private final GateKeeper gateKeeper;
 
-    public ConferenceController(ConferenceLogic conferenceLogic, GateKeeper gateKeeper) {
+    public ConferenceController(ConferenceLogic conferenceLogic, GateKeeper gateKeeper, RecordLogic recordLogic) {
         this.conferenceLogic = conferenceLogic;
         this.gateKeeper = gateKeeper;
+        this.recordLogic = recordLogic;
     }
 
     @GetMapping("/conferences")
@@ -68,9 +71,11 @@ public class ConferenceController extends BaseRestController {
 
     @DeleteMapping("/conferences/{id}")
     public ResponseEntity<?> deleteConference(@PathVariable Long id) {
-        Conference oldConference = conferenceLogic.findById(id)
+        Conference toDeleteConference = conferenceLogic.findById(id)
                 .orElseThrow(() -> new ConferenceNotFoundException(id));
-        gateKeeper.verifyAccessForConference(oldConference);
+        gateKeeper.verifyAccessForConference(toDeleteConference);
+
+        recordLogic.removeSubmissionAndAuthorRecordsForConference(toDeleteConference);
 
         conferenceLogic.deleteById(id);
 

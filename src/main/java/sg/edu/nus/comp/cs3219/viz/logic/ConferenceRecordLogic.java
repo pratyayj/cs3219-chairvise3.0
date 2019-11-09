@@ -7,6 +7,7 @@ import sg.edu.nus.comp.cs3219.viz.storage.repository.ConferenceRecordRepository;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ConferenceRecordLogic {
@@ -18,7 +19,11 @@ public class ConferenceRecordLogic {
     }
 
     public List<ConferenceRecord> findAllForConference(Conference selectedConference) {
-        System.out.println("here in back end ");
         return conferenceRecordRepository.findConferenceRecordsByConference(selectedConference);
+    }
+
+    @Transactional
+    public void deleteConferenceRecordForConference(Conference selectedConference) {
+        conferenceRecordRepository.deleteConferenceRecordByConference(selectedConference);
     }
 }

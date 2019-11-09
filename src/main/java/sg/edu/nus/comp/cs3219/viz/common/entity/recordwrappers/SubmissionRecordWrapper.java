@@ -1,15 +1,14 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.recordwrappers;
 
-import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
+import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AuthorRecordWrapper {
-
+public class SubmissionRecordWrapper {
     @JsonProperty("recordList")
-    public List<AuthorRecord> authorRecordList;
+    public List<SubmissionRecord> submissionRecordList;
 
     @JsonProperty("selectedConferenceId")
     public Long selectedConferenceId;
@@ -22,11 +21,11 @@ public class AuthorRecordWrapper {
         this.selectedConferenceId = selectedConferenceId;
     }
 
-    public List<AuthorRecord> getAuthorRecordList() {
-        return authorRecordList;
+    public List<SubmissionRecord> getSubmissionRecordList() {
+        return submissionRecordList;
     }
 
-    public void setAuthorRecordList(List<AuthorRecord> authorRecordList) {
-        this.authorRecordList = authorRecordList;
+    public void setAuthorRecordList(List<SubmissionRecord> submissionRecordList) {
+        this.submissionRecordList = submissionRecordList;
     }
 }
