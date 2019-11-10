@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -62,37 +63,24 @@ public class AnalysisController extends BaseRestController {
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        AnalysisRequest analysisRequest1 = new AnalysisRequest();
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
-        PresentationSection.Record tables = new PresentationSection.Record();
-        tables.setName("submission_record, submission_author_record, submission_record_author_set ");
-        tables.setCustomized(true);
-        analysisRequest1.addInvolvedRecord(tables);
+        return buildForceDirectedGraph(result, "article", "person");
+    }
 
-        PresentationSection.Joiner joinerRecord = new PresentationSection.Joiner();
-        joinerRecord.setLeft("submission_record.s_id");
-        joinerRecord.setRight("submission_record_author_set.submission_record_s_id");
-        analysisRequest1.addJoiner(joinerRecord);
-        PresentationSection.Joiner joinerAuthor = new PresentationSection.Joiner();
-        joinerAuthor.setLeft("submission_author_record.s_author_id");
-        joinerAuthor.setRight("submission_record_author_set.author_set_s_author_id");
-            analysisRequest1.addJoiner(joinerAuthor);
+    @PostMapping("/presentations/{id}/coauthorshipdatasimilar")
+    public Map<String, List<Map<String, Object>>> coauthorshipDataSimilar(@PathVariable Long id, @Valid @RequestBody AnalysisRequest analysisRequest) {
+        // verify access level
+        Presentation presentation = presentationLogic.findById(id)
+                .orElseThrow(() -> new PresentationNotFoundException(id));
+        gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        PresentationSection.Selection source = new PresentationSection.Selection();
-        source.setRename("source");
-        source.setExpression("s_title");
-        analysisRequest1.addSelection(source);
-        PresentationSection.Selection target = new PresentationSection.Selection();
-        target.setRename("target");
-        target.setExpression("s_author_name");
-        analysisRequest1.addSelection(target);
-        PresentationSection.Selection type = new PresentationSection.Selection();
-        type.setRename("type");
-        type.setExpression("s_is_accepted");
-        analysisRequest1.addSelection(type);
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
-        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest1);
+        return buildForceDirectedGraph(result, "person", "person");
+    }
 
+    public Map<String, List<Map<String, Object>>> buildForceDirectedGraph(List<Map<String, Object>> analysisResult, String sourceName, String targetName) {
         class Node {
             private String name;
             private String type;
@@ -105,34 +93,38 @@ public class AnalysisController extends BaseRestController {
                 }
                 return false;
             }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(this.name, this.type);
+            }
         }
 
-        log.info("Analysis Result from query: " + result);
         // convert to map with key all in lower case
-        List<Map<String, Object>> links_data = result.stream().map(m -> {
-            Map<String, Object> map = new HashMap<>();
-            m.forEach((k, v) -> map.put(k.toLowerCase(), v));
-            return map;
-        }).collect(Collectors.toList());
-        List<Map<String, Object>> nodes_data = result.stream().flatMap(m -> {
+        List<Map<String, Object>> links_data = analysisResult.stream()
+                .filter(m -> !m.get("source").equals(m.get("target"))).map(m -> {
+                    Map<String, Object> map = new HashMap<>();
+                    m.forEach((k, v) -> map.put(k.toLowerCase(), v));
+                    return map;
+                }).collect(Collectors.toList());
+        List<Map<String, Object>> nodes_data = links_data.stream().flatMap(m -> {
             Node n = new Node();
             n.name = m.get("source").toString();
-            n.type = "article";
+            n.type = sourceName;
             Node n2 = new Node();
             n2.name = m.get("target").toString();
-            n2.type = "person";
+            n2.type = targetName;
             return Stream.of(n, n2);
         }).distinct()
-          .map(n -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("name", n.name);
-            map.put("type", n.type);
-            return map;
-        }).collect(Collectors.toList());
+                .map(n -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", n.name);
+                    map.put("type", n.type);
+                    return map;
+                }).collect(Collectors.toList());
         Map<String, List<Map<String, Object>>> finalResult = new HashMap<>();
         finalResult.put("nodes", nodes_data);
         finalResult.put("links", links_data);
         return finalResult;
     }
-
 }

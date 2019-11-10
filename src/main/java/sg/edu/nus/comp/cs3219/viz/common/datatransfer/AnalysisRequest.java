@@ -103,4 +103,13 @@ public class AnalysisRequest {
     public void addSorter(PresentationSection.Sorter sorter) {
         this.sorters.add(sorter);
     }
+
+    public void mergeWith(AnalysisRequest other) {
+        this.selections.addAll(other.getSelections());
+        this.sorters.addAll(other.getSorters());
+        this.groupers.addAll(other.getGroupers());
+        this.joiners.addAll(other.getJoiners());
+        this.filters.addAll(other.getFilters());
+        this.involvedRecords.addAll(other.getInvolvedRecords());
+    }
 }

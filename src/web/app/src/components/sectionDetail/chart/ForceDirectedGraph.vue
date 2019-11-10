@@ -1,8 +1,9 @@
 <template>
   <div>
     <svg
-      width="800"
+      width="100%"
       height="500"
+      viewbox="0 0 800 500"
     />
   </div>
 </template>
@@ -16,20 +17,25 @@
         type: Object,
         required: true
       },
+      options: {
+       type: Object,
+       required: true
+      }
     },
    watch: {
     chartData() {
      if(this.$el.querySelector("svg").children.length > 0) {
       console.log(this.$el.querySelector("svg").children[0].remove());
      }
-     console.log(this.chartData);
      this.handleVisualisation();
     }
    },
     methods: {
      handleVisualisation() {
+      var node_assignment = this.options.nodes;
+      var link_assignment = this.options.links
       var svg = d3.select(this.$el.querySelector("svg")),
-       width = +svg.attr("width"),
+       width = 800,//+svg.attr("width"),
        height = +svg.attr("height");
 
       var radius = 15;
@@ -110,19 +116,19 @@
 
       //Function to choose what color circle we have
       function circleColour(d){
-       if(d.type ==="article"){
-        return "blue";
+       if(d.type in node_assignment){
+        return node_assignment[d.type];
        } else {
-        return "pink";
+        return node_assignment["else"];
        }
       }
 
       //Function to choose the line colour and thickness
       function linkColour(d){
-       if(d.type === "accept"){
-        return "green";
+       if(d.type in link_assignment){
+        return link_assignment[d.type]
        } else {
-        return "red";
+        return link_assignment["else"];
        }
       }
 
