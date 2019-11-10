@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
 import sg.edu.nus.comp.cs3219.viz.common.entity.Presentation;
+import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationWrapper;
 import sg.edu.nus.comp.cs3219.viz.common.exception.PresentationNotFoundException;
 import sg.edu.nus.comp.cs3219.viz.logic.GateKeeper;
 import sg.edu.nus.comp.cs3219.viz.logic.PresentationLogic;
@@ -34,10 +35,13 @@ public class PresentationController extends BaseRestController {
     }
 
     @PostMapping("/presentations")
-    public ResponseEntity<?> newPresentation(@RequestBody Presentation presentation) throws URISyntaxException {
+    public ResponseEntity<?> newPresentation(@RequestBody PresentationWrapper presentationWrapper) throws URISyntaxException {
         UserInfo currentUser = gateKeeper.verifyLoginAccess();
 
-        Presentation newPresentation = presentationLogic.saveForUser(presentation, currentUser);
+        System.out.println(presentationWrapper.selectedPresentationConferenceId);
+
+        Presentation newPresentation = presentationLogic.saveForUser(presentationWrapper.presentationForm, currentUser,
+                presentationWrapper.selectedPresentationConferenceId);
 
         return ResponseEntity
                 .created(new URI("/presentations/" + newPresentation.getId()))

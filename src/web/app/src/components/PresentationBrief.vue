@@ -22,6 +22,19 @@
       <div v-if="!isInEditMode" id="presentation-description">{{ presentationForm.description }}</div>
       <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
     </el-form-item>
+    <el-form-item label="Conference" v-if="isNewPresentation">
+      <el-select name="conference" id="selectedConferenceId" class="form-control" tabindex="12"
+         v-model="selectedPresentationConferenceId" placeholder="Conference Name">
+         <el-option v-for="conference in conferences"
+                   :key="conference.id"
+                   :label="conference.conferenceName"
+                   :value="conference.id">
+         </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="Conference" v-if="!isNewPresentation">
+      <el-tag style="color:white; background-color:goldenrod;"> {{ presentationForm.selectedConferenceName }}</el-tag>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="downloadPDF()" v-if="!isInEditMode && !isNewPresentation">Download as PDF
       </el-button>
@@ -48,7 +61,8 @@
       id: String
     },
     mounted() {
-      this.updatePresentationForm()
+      this.updatePresentationForm();
+      this.$store.dispatch('getConferenceList');
     },
     watch: {
       'id'() {
@@ -68,6 +82,7 @@
           name: this.presentationFormName,
           creatorIdentifier: this.presentationFormCreatorIdentifier,
           description: this.presentationFormDescription,
+          selectedConferenceName: this.presentationFormPresentationConferenceName
         }
       },
       presentationFormName: {
@@ -83,6 +98,9 @@
       },
       presentationFormCreatorIdentifier() {
         return this.$store.state.presentation.presentationForm.creatorIdentifier
+      },
+      presentationFormPresentationConferenceName() {
+        return this.$store.state.presentation.presentationForm.conference.conferenceName
       },
       presentationFormDescription: {
         get() {
@@ -109,7 +127,10 @@
       },
       apiErrorMsg() {
         return this.$store.state.presentation.presentationFormStatus.apiErrorMsg
-      }
+      },
+      conferences: function() {
+          return this.$store.state.conference.conferenceList;
+      },
     },
     data() {
       return {
@@ -120,7 +141,8 @@
             {required: true, message: 'Please enter presentation name', trigger: 'blur'},
             {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
           ]
-        }
+        },
+        selectedPresentationConferenceId: ""
       }
     },
     methods: {
@@ -136,6 +158,7 @@
       },
 
       addPresentation() {
+        this.$store.commit("setSelectedPresentationConferenceId", this.selectedPresentationConferenceId);
         this.$refs['presentationForm'].validate((valid) => {
           if (!valid) {
             return
@@ -148,6 +171,7 @@
                 if (this.isError) {
                   return
                 }
+                this.$store.commit("clearSelectedPresentationConferenceId");
                 // redirect to the newly added presentation
                 this.$router.push({
                   name: 'analyze',
