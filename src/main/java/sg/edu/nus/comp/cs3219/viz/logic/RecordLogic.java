@@ -51,7 +51,7 @@ public class RecordLogic {
     @Transactional
     public void removeAndPersistAuthorRecordForConference(String dataSet, List<AuthorRecord> authorRecordList, Long selectedConferenceId) {
         Conference selectedConference = retrieveSelectedConference(selectedConferenceId);
-        conferenceRecordRepository.deleteConferenceRecordByConference(selectedConference);
+        conferenceRecordRepository.deleteConferenceRecordByConferenceAndRecordType(selectedConference, Const.RecordTypes.AUTHOR_RECORD);
         authorRecordRepository.deleteAllByConferenceEquals(selectedConference);
         // authorRecordRepository.deleteAllByDataSetEquals(dataSet);
         authorRecordRepository.saveAll(authorRecordList.stream().peek(r -> {
@@ -69,7 +69,7 @@ public class RecordLogic {
     @Transactional
     public void removeAndPersistReviewRecordForConference(String dataSet, List<ReviewRecord> reviewRecordList, Long selectedConferenceId) {
         Conference selectedConference = retrieveSelectedConference(selectedConferenceId);
-        conferenceRecordRepository.deleteConferenceRecordByConference(selectedConference);
+        conferenceRecordRepository.deleteConferenceRecordByConferenceAndRecordType(selectedConference, Const.RecordTypes.REVIEW_RECORD);
         reviewRecordRepository.deleteAllByConferenceEquals(selectedConference);
         // reviewRecordRepository.deleteAllByDataSetEquals(dataSet);
         reviewRecordRepository.saveAll(reviewRecordList.stream().peek(r -> {
@@ -87,7 +87,7 @@ public class RecordLogic {
     @Transactional
     public void removeAndPersistSubmissionRecordForConference(String dataSet, List<SubmissionRecord> submissionRecordList, Long selectedConferenceId) {
         Conference selectedConference = retrieveSelectedConference(selectedConferenceId);
-        conferenceRecordRepository.deleteConferenceRecordByConference(selectedConference);
+        conferenceRecordRepository.deleteConferenceRecordByConferenceAndRecordType(selectedConference, Const.RecordTypes.SUBMISSION_RECORD);
         removeSubmissionAndAuthorRecordsForConference(selectedConference);
         // submissionRecordRepository.deleteAllByDataSetEquals(dataSet);
         // submissionAuthorRecordRepository.deleteAllByDataSetEquals(dataSet);
