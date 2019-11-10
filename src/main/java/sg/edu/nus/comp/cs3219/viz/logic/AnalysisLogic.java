@@ -74,7 +74,7 @@ public class AnalysisLogic {
 
         String dataSetFilter = analysisRequest.getInvolvedRecords().stream()
                 .filter(r -> !r.isCustomized())
-                .map(t -> String.format("%s.data_set = '%s'", t.getName(), analysisRequest.getDataSet()))
+                .map(t -> String.format("%s.conference_id = '%s'", t.getName(), conferenceId))
                 .collect(Collectors.joining(" AND "));
 
         String groupersStr = analysisRequest.getGroupers().stream()
@@ -89,10 +89,8 @@ public class AnalysisLogic {
 
         if (!dataSetFilter.isEmpty()) {
             baseSQL += String.format(" WHERE %s", dataSetFilter);
-            baseSQL += String.format(" AND conference_id = %s", conferenceId);
         } else {
             baseSQL += " WHERE true";
-            baseSQL += String.format(" AND conference_id = %s", conferenceId);
         }
 
         if (!joinersStr.isEmpty()) {
