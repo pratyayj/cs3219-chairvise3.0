@@ -32,6 +32,8 @@
          </el-option>
       </el-select>
     </el-form-item>
+    <el-alert style="color:darkred; font-size:18px" v-if="conferences.length === 0" type="error" class="errorMsg"
+                title="There are currently no conferences! Please create one before importing data."/>
     <el-form-item label="Conference" v-if="!isNewPresentation">
       <el-tag style="color:white; background-color:goldenrod;"> {{ presentationForm.selectedConferenceName }}</el-tag>
     </el-form-item>
