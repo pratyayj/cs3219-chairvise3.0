@@ -8,25 +8,6 @@
       <el-button type="success" plain>Logout ({{ userNickname }})</el-button>
     </el-menu-item>
     <el-menu-item
-      index="/importData"
-      :disabled="!isLogin"
-    >
-      Import Data
-    </el-menu-item>
-    <el-menu-item
-      v-if="isLogin"
-      v-loading.fullscreen.lock="isFullscreenLoading"
-      index="/logout"
-      @click="logout"
-    >
-      <el-button
-        type="success"
-        plain
-      >
-        Logout ({{ userNickname }})
-      </el-button>
-    </el-menu-item>
-    <el-menu-item
       v-if="!isLogin"
       v-loading.fullscreen.lock="isFullscreenLoading"
       index="/login"

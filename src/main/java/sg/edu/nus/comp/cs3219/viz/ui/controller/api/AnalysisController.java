@@ -65,7 +65,9 @@ public class AnalysisController extends BaseRestController {
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+        Long conferenceId = presentation.getConference().getId();
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest, conferenceId);
 
         return buildForceDirectedGraph(result, "article", "person");
     }
@@ -77,7 +79,9 @@ public class AnalysisController extends BaseRestController {
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+        Long conferenceId = presentation.getConference().getId();
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest, conferenceId);
 
         return buildForceDirectedGraph(result, "person", "person");
     }
