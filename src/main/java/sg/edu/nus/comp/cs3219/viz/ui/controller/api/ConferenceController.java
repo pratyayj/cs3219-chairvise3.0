@@ -31,7 +31,6 @@ public class ConferenceController extends BaseRestController {
     @GetMapping("/conferences")
     public List<Conference> all() {
         UserInfo currentUser = gateKeeper.verifyLoginAccess();
-        System.out.println("HERE");
         return conferenceLogic.findAllForUser(currentUser);
     }
 
