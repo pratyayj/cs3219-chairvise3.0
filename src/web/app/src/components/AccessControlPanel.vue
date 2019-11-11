@@ -130,6 +130,8 @@
 
 <script>
     import {ID_NEW_PRESENTATION, SPECIAL_IDENTIFIER_PUBLIC} from "@/common/const";
+    import emailjs from 'emailjs-com';
+
     export default {
         name: "AccessControlPanel",
         props: {
@@ -276,8 +278,76 @@
                         accessLevel: $event
                     }
                 );
+
+                // send email if user updated access control.
+                console.log(this);
+                var accessControlList = this.$store.state.accessControl.accessControlList;
+                var creatorName = this.$store.state.userInfo.userEmail;
+                var toMail;
+                for (var i = 0; i < accessControlList.length; i++) {
+                    if (accessControlList[i].id == id) {
+                        toMail = accessControlList[i].userIdentifier;
+                    }
+                }
+                var editLevel;
+                if ($event === "CAN_WRITE") {
+                    editLevel = "can edit";
+                } else if ($event === "CAN_READ") {
+                    editLevel = "can view";
+                }
+                var homePage = "http://localhost:4040/home";
+                var sharedLink = "http://localhost:4040/analyze/" + this.presentationId;
+                var presentationName = this.$store.state.presentation.presentationForm.name;
+                var templateParams = {
+                    "to_mail": toMail,
+                    "from_name": "ChairVisE3.0 Team",
+                    "to_name": toMail.split("@")[0].toString(),
+                    "message_html": "User "+ creatorName + " modified your access level from a shared" +
+                        " presentation("+presentationName+"). " +
+                        "Now, you " + editLevel + " this presentation at " + sharedLink,
+                    "home_page": homePage
+                };
+
+                var serviceId = "default_service";
+                var templateId = "modify_access_level";
+                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then((result) => {
+                    console.log('UPDATE ACCESS CONTROL EMAIL SENT SUCCESS!');
+                }, (error) => {
+                    console.log('UPDATE ACCESS CONTROL EMAIL SEND FAILED...');
+                });
             },
             deleteAccessControl({id}) {
+
+                // send email if access deleted.
+                var accessControlList = this.$store.state.accessControl.accessControlList;
+                var creatorName = this.$store.state.userInfo.userEmail;
+                var toMail;
+                for (var i = 0; i < accessControlList.length; i++) {
+                    if (accessControlList[i].id == id) {
+                        toMail = accessControlList[i].userIdentifier;
+                    }
+                }
+                var homePage = "http://localhost:4040/home";
+                var sharedLink = "http://localhost:4040/analyze/" + this.presentationId;
+                var presentationName = this.$store.state.presentation.presentationForm.name;
+                var templateParams = {
+                    "to_mail": toMail,
+                    "from_name": "ChairVisE3.0 Team",
+                    "to_name": toMail.split("@")[0].toString(),
+                    "message_html": "User " +creatorName + " removed your access from a shared " +
+                        "presentation("+presentationName+"). " +
+                        "Now, you can't edit or view the presentation at " + sharedLink + ". " +
+                        "Please contact the organizer of the presentation if you have any question.",
+                    "home_page": homePage
+                };
+                var serviceId = "default_service";
+                var templateId = "modify_access_level";
+                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then((result) => {
+                    console.log('DELETE ACCESS EMAIL SENT SUCCESSFULLY!');
+                }, (error) => {
+                    console.log('DELETE ACCESS EMAIL SEND FAILED...');
+                });
+
                 this.$store.dispatch('deleteAccessControl',
                     {
                         presentationId: this.presentationId,
@@ -300,6 +370,37 @@
                             this.accessControlFormAccessLevel = '';
                             this.$refs['accessControlForm'].resetFields();
                         });
+                });
+                var toMail = this.accessControlFormUserIdentifier;
+                var editLevel;
+                if (this.accessControlFormAccessLevel === "CAN_WRITE") {
+                    editLevel = "can edit";
+                } else if (this.accessControlFormAccessLevel === "CAN_READ") {
+                    editLevel = "can view";
+                }
+
+                // send email if user created access.
+                // console.log(this);
+                var homePage = "http://localhost:4040/home";
+                var sharedLink = "http://localhost:4040/analyze/" + this.presentationId;
+                var presentationName = this.$store.state.presentation.presentationForm.name;
+                var createName = this.accessControlFormUserIdentifier;
+
+                var templateParams = {
+                    "to_mail": toMail,
+                    "from_name": "ChairVisE3.0 Team",
+                    "to_name": toMail.split("@")[0].toString(),
+                    "message_html": "User "+createName+" shared a presentation ("+presentationName+") to you. Now, " +
+                        "you " + editLevel + " this presentation at " + sharedLink,
+                    "home_page": homePage
+                };
+
+                var serviceId = "default_service";
+                var templateId = "template_F4kfWhTf";
+                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then((result) => {
+                    console.log('ADD ACCESS EMAIL SENT SUCCESSFULLY!');
+                }, (error) => {
+                    console.log('ADD ACCESS EMAIL SEND FAILED...');
                 });
             },
         }
