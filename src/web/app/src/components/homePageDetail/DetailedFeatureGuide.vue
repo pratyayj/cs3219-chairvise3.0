@@ -12,10 +12,14 @@
           </li>
           <li>Step 4. Select if there is a header row in the uploaded csv file.<br/>
           <li>Step 5. For your selected table type, map the database fields to the imported data fields one by one.</li>
-          <li>Step 6. Finally click upload to update the database accordingly.</li>
+          <li>Step 6. Select a conference from the dropdown list to associate this data with.</li>
+          <li>Step 7. Finally click upload to update the database accordingly.</li>
           <li class="without-bullets">&nbsp;</li>
           <li><b>Note: </b> You can select any number of columns to map into the database. Please map all the data
             fields you need.
+          </li>
+          <li style="color:red"><b>Note: </b>If there is a record of the same type already associated with that conference,
+            it will be overwritten by the data that is being uploaded currently.
           </li>
         </ul>
       </li>
@@ -23,7 +27,10 @@
       <li class="without-bullets">
         <ul>
           <li>Step 1. Upon logging in, click on the "Analyze" tab.</li>
-          <li>Step 2. Create a new presentation name (minimum 3 characters) with description (optional).</li>
+          <li>Step 2. Create a new presentation name (minimum 3 characters) with description (optional).
+            Select a conference from the dropdown list to associate this presentation with (create a conference
+            if you have not already done so).
+          </li>
           <li>Step 3. Select a list of pre-defined visualizations for submission, author or review.</li>
           <li>Step 4. Click "Add New Section" to view the selected visualization section.</li>
           <li>Step 5. For each pre-defined visualization, you can edit, delete, filter and preview.</li>
@@ -54,6 +61,16 @@
           <li><b>Note: </b>There is also an option to give Public Access Control (view or edit). And you can view who
             has access to the presentation as well.
           </li>
+        </ul>
+      </li>
+      <li id="add-conference"><h3>User Guide for Adding Conference:</h3></li>
+      <li class="without-bullets">
+        <ul>
+          <li>Step 1. Upon logging in, click on the "Conference List".</li>
+          <li>Step 2. Create a new conference name (minimum 3 characters) with the year (compulsory).</li>
+          <li>Step 3. Save the conference.</li>
+          <li class="without-bullets">&nbsp;</li>
+          <li><b>Note: </b>Without at least one existing conference, you cannot import any data or make any presentations.</li>
         </ul>
       </li>
     </ul>

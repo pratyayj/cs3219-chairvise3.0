@@ -32,6 +32,12 @@
           How to Share Presentation
         </span>
       </el-menu-item>
+      <el-menu-item index="add-conference">
+        <i class="el-icon-question"></i>
+        <span>
+          How to Add Conference
+        </span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
