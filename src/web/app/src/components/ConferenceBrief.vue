@@ -137,7 +137,7 @@
                     if (this.isNewConference) {
                         this.$store.dispatch('saveConference')
                             .then(() => {
-                                if (this.isError()) {
+                                if (this.isError) {
                                     return
                                 }
                                 this.$router.push({
