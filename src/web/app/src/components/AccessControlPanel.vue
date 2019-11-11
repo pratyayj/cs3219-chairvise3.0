@@ -384,13 +384,13 @@
                 var homePage = "http://localhost:4040/home";
                 var sharedLink = "http://localhost:4040/analyze/" + this.presentationId;
                 var presentationName = this.$store.state.presentation.presentationForm.name;
-                var createName = this.accessControlFormUserIdentifier;
+                var creatorName = this.$store.state.userInfo.userEmail;
 
                 var templateParams = {
                     "to_mail": toMail,
                     "from_name": "ChairVisE3.0 Team",
                     "to_name": toMail.split("@")[0].toString(),
-                    "message_html": "User "+createName+" shared a presentation ("+presentationName+") to you. Now, " +
+                    "message_html": "User "+creatorName+" shared a presentation ("+presentationName+") to you. Now, " +
                         "you " + editLevel + " this presentation at " + sharedLink,
                     "home_page": homePage
                 };
