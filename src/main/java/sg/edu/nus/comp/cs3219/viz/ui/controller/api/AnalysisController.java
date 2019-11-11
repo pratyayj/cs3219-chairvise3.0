@@ -46,7 +46,9 @@ public class AnalysisController extends BaseRestController {
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_READ);
 
-        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+        Long conferenceId = presentation.getConference().getId();
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest, conferenceId);
         log.info("Analysis Result from query: " + result);
         // convert to map with key all in lower case
         return result.stream().map(m -> {

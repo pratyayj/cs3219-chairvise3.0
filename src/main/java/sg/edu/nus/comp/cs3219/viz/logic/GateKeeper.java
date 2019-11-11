@@ -6,6 +6,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import org.springframework.stereotype.Component;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
+import sg.edu.nus.comp.cs3219.viz.common.entity.Conference;
 import sg.edu.nus.comp.cs3219.viz.common.entity.Presentation;
 import sg.edu.nus.comp.cs3219.viz.common.exception.UnauthorisedException;
 import sg.edu.nus.comp.cs3219.viz.common.util.Const;
@@ -101,6 +102,15 @@ public class GateKeeper {
         }
 
         throw new UnauthorisedException();
+    }
+
+    // just to check if the person accessing is the creator himself
+    public void verifyAccessForConference(Conference conference) {
+        UserInfo currentUser = getCurrentLoginUser().orElseThrow(UnauthorisedException::new);
+
+        if (conference.getCreatorIdentifier().equals(currentUser.getUserEmail())) {
+            return;
+        }
     }
 
 

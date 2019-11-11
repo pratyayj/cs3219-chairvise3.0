@@ -45,14 +45,14 @@ public class AnalysisLogic {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Map<String, Object>> analyse(AnalysisRequest analysisRequest) {
-        String sql = generateSQL(analysisRequest);
+    public List<Map<String, Object>> analyse(AnalysisRequest analysisRequest, Long conferenceId) {
+        String sql = generateSQL(analysisRequest, conferenceId);
 
         log.info("Analysis Query: " + sql);
         return jdbcTemplate.queryForList(sql);
     }
 
-    private String generateSQL(AnalysisRequest analysisRequest) {
+    private String generateSQL(AnalysisRequest analysisRequest, Long conferenceId) {
         String selectionsStr = analysisRequest.getSelections().stream()
                 .map(s -> s.getExpression() + String.format(" AS `%s`", s.getRename()))
                 .collect(Collectors.joining(","));
@@ -74,7 +74,7 @@ public class AnalysisLogic {
 
         String dataSetFilter = analysisRequest.getInvolvedRecords().stream()
                 .filter(r -> !r.isCustomized())
-                .map(t -> String.format("%s.data_set = '%s'", t.getName(), analysisRequest.getDataSet()))
+                .map(t -> String.format("%s.conference_id = '%s'", t.getName(), conferenceId))
                 .collect(Collectors.joining(" AND "));
 
         String groupersStr = analysisRequest.getGroupers().stream()

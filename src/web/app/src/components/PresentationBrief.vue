@@ -70,6 +70,21 @@
         v-model="presentationFormDescription"
       />
     </el-form-item>
+    <el-form-item label="Conference" v-if="isNewPresentation">
+      <el-select name="conference" id="selectedConferenceId" class="form-control" tabindex="12"
+         v-model="selectedPresentationConferenceId" placeholder="Conference Name">
+         <el-option v-for="conference in conferences"
+                   :key="conference.id"
+                   :label="conference.conferenceName"
+                   :value="conference.id">
+         </el-option>
+      </el-select>
+    </el-form-item>
+    <el-alert style="color:darkred; font-size:18px" v-if="conferences.length === 0" type="error" class="errorMsg"
+                title="There are currently no conferences! Please create one before importing data."/>
+    <el-form-item label="Conference" v-if="!isNewPresentation">
+      <el-tag style="color:white; background-color:goldenrod;"> {{ presentationForm.selectedConferenceName }}</el-tag>
+    </el-form-item>
     <el-form-item>
       <el-button
         v-if="!isInEditMode && !isNewPresentation"
@@ -118,27 +133,17 @@
 
   export default {
     name: 'PresentationBrief',
-
-    components: {
-      AccessControlPanel
-    },
     props: {
-      id: {
-        type: String,
-        required: true
-      }
+      id: String
     },
-    data() {
-      return {
-        isEditing: false,
-        isAccessControlDialogVisible: false,
-        rules: {
-          name: [
-            {required: true, message: 'Please enter presentation name', trigger: 'blur'},
-            {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
-          ]
-        }
-      }
+    mounted() {
+      this.updatePresentationForm();
+      this.$store.dispatch('getConferenceList');
+    },
+    watch: {
+      'id'() {
+        this.updatePresentationForm()
+      },
     },
     computed: {
       isLogin() {
@@ -153,6 +158,7 @@
           name: this.presentationFormName,
           creatorIdentifier: this.presentationFormCreatorIdentifier,
           description: this.presentationFormDescription,
+          selectedConferenceName: this.presentationFormPresentationConferenceName
         }
       },
       presentationFormName: {
@@ -168,6 +174,9 @@
       },
       presentationFormCreatorIdentifier() {
         return this.$store.state.presentation.presentationForm.creatorIdentifier
+      },
+      presentationFormPresentationConferenceName() {
+        return this.$store.state.presentation.presentationForm.conference.conferenceName
       },
       presentationFormDescription: {
         get() {
@@ -194,15 +203,23 @@
       },
       apiErrorMsg() {
         return this.$store.state.presentation.presentationFormStatus.apiErrorMsg
-      }
-    },
-    watch: {
-      'id'() {
-        this.updatePresentationForm()
+      },
+      conferences: function() {
+          return this.$store.state.conference.conferenceList;
       },
     },
-    mounted() {
-      this.updatePresentationForm()
+    data() {
+      return {
+        isEditing: false,
+        isAccessControlDialogVisible: false,
+        rules: {
+          name: [
+            {required: true, message: 'Please enter presentation name', trigger: 'blur'},
+            {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
+          ]
+        },
+        selectedPresentationConferenceId: ""
+      }
     },
     methods: {
       changeEditMode(isEditing) {
@@ -217,6 +234,7 @@
       },
 
       addPresentation() {
+        this.$store.commit("setSelectedPresentationConferenceId", this.selectedPresentationConferenceId);
         this.$refs['presentationForm'].validate((valid) => {
           if (!valid) {
             return
@@ -229,6 +247,7 @@
                 if (this.isError) {
                   return
                 }
+                this.$store.commit("clearSelectedPresentationConferenceId");
                 // redirect to the newly added presentation
                 this.$router.push({
                   name: 'analyze',
@@ -299,6 +318,10 @@
           });
         });
       }
+    },
+
+    components: {
+      AccessControlPanel
     },
   }
 </script>

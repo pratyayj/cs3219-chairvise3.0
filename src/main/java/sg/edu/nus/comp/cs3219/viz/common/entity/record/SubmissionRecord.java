@@ -1,11 +1,15 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
+import sg.edu.nus.comp.cs3219.viz.common.entity.Conference;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -50,7 +54,7 @@ public class SubmissionRecord {
     private List<String> authors;
 
     // internal set of authors of the associated
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<SubmissionAuthorRecord> authorSet;
 
@@ -93,6 +97,19 @@ public class SubmissionRecord {
     @Exportable(name = "Submission Abstract", nameInDB = "s_submission_abstract", description = "Abstract of the submission")
     @Column(name = "s_submission_abstract", columnDefinition = "TEXT")
     private String submissionAbstract;
+
+    @JoinColumn(name="conference_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Conference conference;
+
+    public Conference getConferenceId() {
+        return conference;
+    }
+
+    public void setConference(Conference conference) {
+        this.conference = conference;
+    }
 
     public Long getId() {
         return id;

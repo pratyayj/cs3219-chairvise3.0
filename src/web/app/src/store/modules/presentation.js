@@ -14,15 +14,30 @@ export default {
       name: '',
       description: '',
       creatorIdentifier: '',
+      conference: {
+        conferenceName: '',
+        conferenceYear: '',
+        creatorIdentifier: '',
+        id: ''
+      }
     },
     presentationFormStatus: {
       isLoading: false,
       isApiError: false,
       apiErrorMsg: '',
     },
-    isPresentationEditable: false
+    isPresentationEditable: false,
+    selectedPresentationConferenceId: ""
   },
   mutations: {
+    setSelectedPresentationConferenceId(state, value) {
+      state.selectedPresentationConferenceId = value;
+    },
+
+    clearSelectedPresentationConferenceId(state) {
+      state.selectedPresentationConferenceId = "";
+    },
+
     setPresentationListLoading(state, payload) {
       if (payload) {
         state.presentationListStatus.isApiError = false;
@@ -75,9 +90,11 @@ export default {
       state.presentationForm.name = '';
       state.presentationForm.description = '';
       state.presentationForm.creatorIdentifier = '';
+      state.presentationForm.conference = {};
       state.presentationFormStatus.isLoading = false;
       state.presentationFormStatus.isApiError = false;
       state.presentationFormStatus.apiErrorMsg = '';
+      state.selectedPresentationConferenceId = '';
     },
 
     setPresentationFormField(state, {field, value}) {
@@ -119,7 +136,8 @@ export default {
 
     async savePresentation({commit, state}) {
       commit('setPresentationFormLoading', true);
-      await axios.post('/api/presentations', state.presentationForm)
+      await axios.post('/api/presentations', {presentationForm: state.presentationForm,
+        selectedPresentationConferenceId: state.selectedPresentationConferenceId})
         .then(response => {
           commit('addToPresentationList', deepCopy(response.data));
           commit('setPresentationForm', deepCopy(response.data))

@@ -1,14 +1,21 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
+import sg.edu.nus.comp.cs3219.viz.common.entity.Conference;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Exportable(name = "Author Record", nameInDB = "author_record")
 @Entity
@@ -23,6 +30,19 @@ public class AuthorRecord {
 
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
+
+    @JoinColumn(name="conference_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Conference conference;
+
+    public Conference getConferenceId() {
+        return conference;
+    }
+
+    public void setConference(Conference conference) {
+        this.conference = conference;
+    }
 
     @Exportable(name = "Submission Id", nameInDB = "a_submission_id")
     @Column(name = "a_submission_id")

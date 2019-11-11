@@ -23,10 +23,19 @@ export default {
       predefinedMapping: null,
       predefinedMappingId: null,
     },
-    error: []
+    error: [],
+    selectedConferenceId: ""
   },
 
   mutations: {
+    setSelectedConferenceId(state, value) {
+      state.selectedConferenceId = value;
+    },
+
+    clearSelectedConferenceId(state) {
+      state.selectedConferenceId = "";
+    },
+
     setUploadSuccess(state, success) {
       state.isUploadSuccess = success;
     },
@@ -143,7 +152,8 @@ export default {
           endpoint = "submission";
           break;
       }
-      await axios.post("/api/record/" + endpoint, state.data.processedResult)
+      await axios.post("/api/record/" + endpoint, {recordList: state.data.processedResult,
+        selectedConferenceId: state.selectedConferenceId})
         .then(() => {
           commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", true);
