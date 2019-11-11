@@ -350,7 +350,7 @@ export default {
   },
   "submission_co_authorship": {
     name: "Co-authorship Submission record",
-    group: 'Author Record',
+    group: 'Submission Record',
     data: {
       type: 'coauthorship',
       title: 'Co-authorship Submission record',
@@ -408,7 +408,7 @@ export default {
   },
   "author_co_authorship": {
     name: "Co-authorship Author record",
-    group: 'Author Record',
+    group: 'Submission Record',
     data: {
       type: 'coauthorship',
       title: 'Co-authorship Author record',
