@@ -1,19 +1,22 @@
 <template>
     <el-alert v-if="isNewConference && !isLogin" title="Please login to create new conference" type="error" show-icon
               class="errorMsg"/>
-    <el-form v-else label-position="right" ref="conferenceForm" label-width="120px" :rules="rules"
+    <el-form v-else label-position="right" ref="conferenceForm" label-width="120px"
              :model="conferenceForm" v-loading="isLoading">
         <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg"/>
-        <el-form-item label="Conference Name" :prop=" isInEditMode ? 'name' : ''">
+        <el-form-item label="Conf. Name" :prop=" isInEditMode ? 'conferenceName' : ''" :rules="rules.conferenceName">
             <div v-if="!isInEditMode">{{ conferenceForm.conferenceName }}</div>
             <el-input v-model="conferenceFormName" v-if="isInEditMode"/>
         </el-form-item>
         <el-form-item label="Creator" v-if="!isNewConference">
             <el-tag>Created by {{ conferenceForm.creatorIdentifier }}</el-tag>
         </el-form-item>
-        <el-form-item label="Year">
+        <el-form-item label="Year" :prop=" isInEditMode ? 'conferenceYear' : ''" :rules="rules.conferenceYear">
             <div v-if="!isInEditMode" id="conference-year">{{ conferenceForm.conferenceYear }}</div>
-            <el-input v-model="conferenceFormYear" v-if="isInEditMode"/>
+            <!--- el-input v-model="conferenceFormYear" v-if="isInEditMode"/ -->
+            <el-select v-else placeholder="Conference Year" v-model="conferenceFormYear">
+                <el-option v-for="year in years" :value="year" :key="year" :label="year"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode && isConferenceEditable">Edit
@@ -97,6 +100,10 @@
             },
             apiErrorMsg() {
                 return this.$store.state.conference.conferenceFormStatus.apiErrorMsg
+            },
+            years () {
+                const year = new Date().getFullYear() + 10;
+                return Array.from({length: year - 1900}, (value, index) => 1901 + index)
             }
         },
         data() {
@@ -108,9 +115,7 @@
                         {min: 3, message: 'The length should be more than 3 characters.', trigger: 'blur'}
                     ],
                     conferenceYear: [
-                        {required: true, message: 'There must be a conference year.', trigger: 'blur'},
-                        {min: 4, message: 'The length should be 4 characters.', trigger: 'blur'},
-                        {max: 4, message: 'The length should be 4 characters.', trigger: 'blur'}
+                        {required: true, message: 'There should be a year, or you will forget too.', trigger: 'blur'}
                     ]
                 }
             }
