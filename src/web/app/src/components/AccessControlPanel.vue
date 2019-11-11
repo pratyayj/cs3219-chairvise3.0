@@ -310,9 +310,9 @@
 
                 var serviceId = "default_service";
                 var templateId = "modify_access_level";
-                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then((result) => {
+                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then(() => {
                     console.log('UPDATE ACCESS CONTROL EMAIL SENT SUCCESS!');
-                }, (error) => {
+                }, () => {
                     console.log('UPDATE ACCESS CONTROL EMAIL SEND FAILED...');
                 });
             },
@@ -342,9 +342,9 @@
                 };
                 var serviceId = "default_service";
                 var templateId = "modify_access_level";
-                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then((result) => {
+                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then(() => {
                     console.log('DELETE ACCESS EMAIL SENT SUCCESSFULLY!');
-                }, (error) => {
+                }, () => {
                     console.log('DELETE ACCESS EMAIL SEND FAILED...');
                 });
 
@@ -397,9 +397,9 @@
 
                 var serviceId = "default_service";
                 var templateId = "template_F4kfWhTf";
-                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then((result) => {
+                emailjs.send(serviceId, templateId, templateParams, 'user_9GYYhuAzRpxnPndS8ZloS').then(() => {
                     console.log('ADD ACCESS EMAIL SENT SUCCESSFULLY!');
-                }, (error) => {
+                }, () => {
                     console.log('ADD ACCESS EMAIL SEND FAILED...');
                 });
             },
