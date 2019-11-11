@@ -1,5 +1,9 @@
 <template>
-  <canvas class="canvasStyle" width="1300" height="480"></canvas>
+  <canvas
+    class="canvasStyle"
+    width="1300"
+    height="480"
+  />
 </template>
 
 <script>
@@ -15,6 +19,15 @@
         required: true
       },
     },
+
+    computed: {
+      weightFactor() {
+        // magic number
+        return 100.0 / this.data.reduce((previous, current) => {
+          return Math.max(previous, current[1])
+        }, 0);
+      }
+    },
     watch: {
       data() {
         this.renderWordCloud()
@@ -25,15 +38,6 @@
     },
     updated() {
       this.renderWordCloud()
-    },
-
-    computed: {
-      weightFactor() {
-        // magic number
-        return 100.0 / this.data.reduce((previous, current) => {
-          return Math.max(previous, current[1])
-        }, 0);
-      }
     },
 
     methods: {

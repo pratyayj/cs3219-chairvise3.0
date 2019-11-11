@@ -1,7 +1,10 @@
 <template>
   <div>
     <!--can change to a better logo next time-->
-    <img alt="Vue logo" src="@/assets/logo.png">
+    <img
+      alt="Vue logo"
+      src="@/assets/logo.png"
+    >
     <h2>Welcome to Conference Data Visualization Management System</h2>
     <h3>
       This project is designed to enable conference program chairpersons to visualize and share conference submission
@@ -16,9 +19,6 @@
 <script>
   export default {
     name: 'WelcomeMessage',
-    props: {
-      msg: String
-    }
   }
 </script>
 

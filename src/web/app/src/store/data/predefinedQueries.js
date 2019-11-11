@@ -348,6 +348,134 @@ export default {
         }
     }
   },
+  "submission_co_authorship": {
+    name: "Co-authorship Submission record",
+    group: 'Author Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Co-authorship Submission record',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'Blue nodes represent articles, pink nodes represent people. A green line between a blue and a pink node indicates that corresponding paper was accepted, else a red line indicates rejection.',
+      selections: [
+        {
+          expression: "s_title",
+          rename: 'source'
+        },
+        {
+          expression: "s_author_name",
+          rename: 'target'
+        },
+        {
+          expression: "s_is_accepted",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'submission_author_record, submission_record_author_set',
+          customized: true,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [
+        {
+          left: "submission_record.s_id",
+          right: "submission_record_author_set.submission_record_s_id",
+        },
+        {
+          left: "submission_author_record.s_author_id",
+          right: "submission_record_author_set.author_set_s_author_id",
+        }
+      ],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdata",
+        "nodes": {
+          "article": "blue",
+          "else": "pink"
+        },
+        "links": {
+          "accept": "green",
+          "else": "red"
+        }
+      }
+    }
+  },
+  "author_co_authorship": {
+    name: "Co-authorship Author record",
+    group: 'Author Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Co-authorship Author record',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'All authors that have worked with another author on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise. Individual authors not shown.',
+      selections: [
+        {
+          expression: "second_sar.s_author_name",
+          rename: 'source'
+        },
+        {
+          expression: "submission_author_record.s_author_name",
+          rename: 'target'
+        },
+        {
+          expression: "s_is_accepted",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'submission_author_record, submission_record_author_set, submission_record_author_set AS `second_sras`, submission_author_record AS `second_sar`',
+          customized: true,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [
+        {
+          left: "submission_record.s_id",
+          right: "submission_record_author_set.submission_record_s_id",
+        },
+        {
+          left: "submission_author_record.s_author_id",
+          right: "submission_record_author_set.author_set_s_author_id",
+        },
+        {
+          left: "submission_record_author_set.submission_record_s_id",
+          right: "second_sras.submission_record_s_id",
+        },
+        {
+          left: "second_sar.s_author_id",
+          right: "second_sras.author_set_s_author_id",
+        }
+      ],
+      groupers: [],
+      sorters: [
+        {
+          field: 'submission_record.s_submission_time',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        "url": "coauthorshipdatasimilar",
+        "nodes": {
+          "else": "blue"
+        },
+        "links": {
+          "accept": "green",
+          "else": "red"
+        }
+      }
+    }
+  },
   /*
   "submission_rank_paper_author": {
     name: "Submission Rank Paper Author",

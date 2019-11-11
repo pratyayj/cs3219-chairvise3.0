@@ -1,32 +1,63 @@
 <template>
-  <basic-section-detail :section-detail="sectionDetail" :presentation-id="presentationId" :has-data="hasData"
-                        :extraFormItemsRules="{}"
-                        @update-visualisation="updateVisualisation">
-    <line-chart :chart-data="chartData" :options="options"></line-chart>
+  <basic-section-detail
+    :section-detail="sectionDetail"
+    :presentation-id="presentationId"
+    :has-data="hasData"
+    :extra-form-items-rules="{}"
+    @update-visualisation="updateVisualisation"
+  >
+    <line-chart
+      :chart-data="chartData"
+      :options="options"
+    />
 
-    <template slot="extraFormItems" slot-scope="slotProps">
-      <el-form-item label="xAxis Field Name" prop="extraData.xAxisFieldName" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="xAxisFieldName" v-model="slotProps.extraData.xAxisFieldName">
+    <template
+      slot="extraFormItems"
+      slot-scope="slotProps"
+    >
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="xAxis Field Name"
+        prop="extraData.xAxisFieldName"
+      >
+        <el-select
+          v-model="slotProps.extraData.xAxisFieldName"
+          placeholder="xAxisFieldName"
+        >
           <el-option
             v-for="selection in slotProps.editForm.selections"
             :key="selection.rename"
             :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
+            :value="selection.rename"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="yAxis Field Name" prop="extraData.yAxisFieldName" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="yAxisFieldName" v-model="slotProps.extraData.yAxisFieldName">
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="yAxis Field Name"
+        prop="extraData.yAxisFieldName"
+      >
+        <el-select
+          v-model="slotProps.extraData.yAxisFieldName"
+          placeholder="yAxisFieldName"
+        >
           <el-option
             v-for="selection in slotProps.editForm.selections"
             :key="selection.rename"
             :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
+            :value="selection.rename"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="Legend Label Name" prop="extraData.dataSetLabel" v-if="slotProps.isInAdvancedMode">
-        <el-input v-model="slotProps.extraData.dataSetLabel" placeholder="Label Name"></el-input>
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Legend Label Name"
+        prop="extraData.dataSetLabel"
+      >
+        <el-input
+          v-model="slotProps.extraData.dataSetLabel"
+          placeholder="Label Name"
+        />
       </el-form-item>
     </template>
   </basic-section-detail>
@@ -39,6 +70,11 @@
 
   export default {
     name: "LineChartSectionDetail",
+
+    components: {
+      BasicSectionDetail,
+      LineChart
+    },
 
     props: {
       sectionDetail: {
@@ -124,11 +160,6 @@
           }
         }
       }
-    },
-
-    components: {
-      BasicSectionDetail,
-      LineChart
     }
   }
 </script>

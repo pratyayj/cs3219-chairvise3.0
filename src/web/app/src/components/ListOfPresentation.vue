@@ -1,21 +1,28 @@
 <template>
   <div>
     <h4>Presentations created by me</h4>
-    <el-menu :default-active="$route.path" v-loading="isLoading" router>
+    <el-menu
+      v-loading="isLoading"
+      :default-active="$route.path"
+      router
+    >
       <li key="__NEW__">
         <el-menu-item :index="'/analyze/__NEW__'">
-          <i class="el-icon-edit-outline"></i>
+          <i class="el-icon-edit-outline" />
           <span slot="title">
-          New
-        </span>
+            New
+          </span>
         </el-menu-item>
       </li>
-      <li v-for="presentation in presentations" :key="presentation.id">
+      <li
+        v-for="presentation in presentations"
+        :key="presentation.id"
+      >
         <el-menu-item :index="`/analyze/${presentation.id}`">
-          <i class="el-icon-document"></i>
+          <i class="el-icon-document" />
           <span slot="title">
-          {{ presentation.name }}
-        </span>
+            {{ presentation.name }}
+          </span>
         </el-menu-item>
       </li>
     </el-menu>
@@ -27,18 +34,6 @@
     name: 'ListOfPresentation',
     data() {
       return {}
-    },
-    watch: {
-      'isError'() {
-        if (!this.isError) {
-          return
-        }
-        this.$notify.error({
-          title: 'Presentation list API request fail',
-          message: this.$store.state.presentation.presentationListStatus.apiErrorMsg,
-          duration: 0
-        });
-      }
     },
     computed: {
       isLoading() {
@@ -53,6 +48,18 @@
       isError() {
         return this.$store.state.presentation.presentationListStatus.isApiError
       },
+    },
+    watch: {
+      'isError'() {
+        if (!this.isError) {
+          return
+        }
+        this.$notify.error({
+          title: 'Presentation list API request fail',
+          message: this.$store.state.presentation.presentationListStatus.apiErrorMsg,
+          duration: 0
+        });
+      }
     },
     mounted() {
       this.$store.dispatch('getPresentationList')

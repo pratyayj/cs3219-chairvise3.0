@@ -1,66 +1,128 @@
 <template>
-  <basic-section-detail :section-detail="sectionDetail" :presentation-id="presentationId" :has-data="hasData"
-                        :edit-form-selections-rule="editFormSelectionsRule"
-                        :edit-form-involved-records-rule="editFormInvolvedRecordsRule"
-                        :edit-form-filters-rule="editFormFiltersRule"
-                        :edit-form-groupers-rule="editFormGroupersRule"
-                        :edit-form-sorters-rule="editFormSortersRule"
-                        :extraFormItemsRules="extraFormItemsRules"
-                        @update-visualisation="updateVisualisation">
-    <bar-chart :chart-data="chartData" :options="options"></bar-chart>
+  <basic-section-detail
+    :section-detail="sectionDetail"
+    :presentation-id="presentationId"
+    :has-data="hasData"
+    :edit-form-selections-rule="editFormSelectionsRule"
+    :edit-form-involved-records-rule="editFormInvolvedRecordsRule"
+    :edit-form-filters-rule="editFormFiltersRule"
+    :edit-form-groupers-rule="editFormGroupersRule"
+    :edit-form-sorters-rule="editFormSortersRule"
+    :extra-form-items-rules="extraFormItemsRules"
+    @update-visualisation="updateVisualisation"
+  >
+    <bar-chart
+      :chart-data="chartData"
+      :options="options"
+    />
 
-    <template slot="extraFormItems" slot-scope="slotProps">
-      <el-form-item label="xAxis Field Name" prop="extraData.xAxisFieldName" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="xAxisFieldName" v-model="slotProps.extraData.xAxisFieldName">
+    <template
+      slot="extraFormItems"
+      slot-scope="slotProps"
+    >
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="xAxis Field Name"
+        prop="extraData.xAxisFieldName"
+      >
+        <el-select
+          v-model="slotProps.extraData.xAxisFieldName"
+          placeholder="xAxisFieldName"
+        >
           <el-option
             v-for="selection in slotProps.editForm.selections"
             :key="selection.rename"
             :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
+            :value="selection.rename"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="yAxis Field Name" prop="extraData.yAxisFieldName" v-if="slotProps.isInAdvancedMode">
-        <el-select placeholder="yAxisFieldName" v-model="slotProps.extraData.yAxisFieldName">
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="yAxis Field Name"
+        prop="extraData.yAxisFieldName"
+      >
+        <el-select
+          v-model="slotProps.extraData.yAxisFieldName"
+          placeholder="yAxisFieldName"
+        >
           <el-option
             v-for="selection in slotProps.editForm.selections"
             :key="selection.rename"
             :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
+            :value="selection.rename"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="Legend Label Name" prop="extraData.dataSetLabel" v-if="slotProps.isInAdvancedMode">
-        <el-input v-model="slotProps.extraData.dataSetLabel" placeholder="Label Name"></el-input>
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Legend Label Name"
+        prop="extraData.dataSetLabel"
+      >
+        <el-input
+          v-model="slotProps.extraData.dataSetLabel"
+          placeholder="Label Name"
+        />
       </el-form-item>
-      <el-form-item label="Colorful Bar" prop="extraData.isColorfulBar" v-if="slotProps.isInAdvancedMode">
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Colorful Bar"
+        prop="extraData.isColorfulBar"
+      >
         <el-switch
           v-model="slotProps.extraData.isColorfulBar"
           active-text="Colorful Bar"
-          inactive-text="Single Color Bar">
-        </el-switch>
+          inactive-text="Single Color Bar"
+        />
       </el-form-item>
-      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay"
-                    v-if="slotProps.isInAdvancedMode">
-        <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
+      <el-form-item
+        v-if="slotProps.isInAdvancedMode"
+        label="Num of result to display"
+        prop="extraData.numOfResultToDisplay"
+      >
+        <el-slider
+          v-model="slotProps.extraData.numOfResultToDisplay"
+          :min="5"
+          :max="30"
+        />
       </el-form-item>
-      <el-form-item v-if="slotProps.isInAdvancedMode"
-                    v-for="(tooltip, index) in slotProps.extraData.fieldsShownInToolTips" :label="'Tooltips ' + index"
-                    :key="'tooltips' + index">
-        <el-select placeholder="Field" v-model="tooltip.field">
-          <el-option
-            v-for="selection in slotProps.editForm.selections"
-            :key="selection.rename"
-            :label="selection.rename"
-            :value="selection.rename">
-          </el-option>
-        </el-select>&nbsp;
-        <el-input v-model="tooltip.label" placeholder="Label Name" style="width: 150px"></el-input>&nbsp;
-        <el-button type="danger" icon="el-icon-delete" circle
-                   @click="removeTooltip(slotProps.extraData.fieldsShownInToolTips, tooltip)"></el-button>
-      </el-form-item>
+      <template v-if="slotProps.isInAdvancedMode">
+        <el-form-item
+          v-for="(tooltip, index) in slotProps.extraData.fieldsShownInToolTips"
+          :key="'tooltips' + index"
+          :label="'Tooltips ' + index"
+        >
+          <el-select
+            v-model="tooltip.field"
+            placeholder="Field"
+          >
+            <el-option
+              v-for="selection in slotProps.editForm.selections"
+              :key="selection.rename"
+              :label="selection.rename"
+              :value="selection.rename"
+            />
+          </el-select>&nbsp;
+          <el-input
+            v-model="tooltip.label"
+            placeholder="Label Name"
+            style="width: 150px"
+          />&nbsp;
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            @click="removeTooltip(slotProps.extraData.fieldsShownInToolTips, tooltip)"
+          />
+        </el-form-item>
+      </template>
       <el-form-item v-if="slotProps.isInAdvancedMode">
-        <el-button type="success" plain @click="addTooltip(slotProps.extraData.fieldsShownInToolTips)">Add Tooltip
+        <el-button
+          type="success"
+          plain
+          @click="addTooltip(slotProps.extraData.fieldsShownInToolTips)"
+        >
+          Add Tooltip
         </el-button>
       </el-form-item>
     </template>
@@ -74,6 +136,11 @@
 
   export default {
     name: "BarChartSectionDetail",
+
+    components: {
+      BasicSectionDetail,
+      BarChart
+    },
 
     props: {
       sectionDetail: {
@@ -246,11 +313,6 @@
         let index = tooltips.indexOf(tooltipToRemove);
         tooltips.splice(index, 1)
       },
-    },
-
-    components: {
-      BasicSectionDetail,
-      BarChart
     }
   }
 </script>
