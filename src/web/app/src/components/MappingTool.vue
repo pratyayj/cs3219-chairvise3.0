@@ -32,7 +32,7 @@
 
       <!-- conference selection group -->
       <h3>Conference</h3>
-      <p style="color:coral;font-size:14px">Please select a conference to check its existing records.</p>
+      <p style="color:goldenrod;font-size:14px">Please select a conference to check its existing records.</p>
       <el-select name="conference" id="selectedConferenceId" class="form-control" tabindex="12"
               v-model="selectedConferenceId" placeholder="Conference Name">
         <el-option v-for="conference in conferences"
@@ -41,9 +41,10 @@
                 :value="conference.id">
         </el-option>
       </el-select>
-
-      <p v-if="conferenceRecords.length === 0">There are no existing records for this conference.</p>
-      <p v-else>This conference already has the following records:</p>
+      <el-alert style="color:darkred; font-size:18px" v-if="conferences.length === 0" type="error" class="errorMsg"
+        title="There are currently no conferences! Please create one before importing data."/>
+      <p v-if="conferenceRecords.length === 0 && conferences.length !== 0">There are no existing records for this conference.</p>
+      <p v-else-if="conferenceRecords.length !== 0 && conferences.length !==0 ">This conference already has the following records:</p>
       <ul id="conferenceRecords">
         <li v-for="conferenceRecord in conferenceRecords">
           {{conferenceRecord.recordType}}
@@ -87,7 +88,7 @@
       title="Confirm"
       :visible.sync="hasSubmitted"
       width="30%" center>
-      <span>After submission, your will not be able to modify your mapping. Are you sure that the columns are correctly mapped?</span>
+      <span>After submission, you will not be able to modify your mapping. Are you sure that the columns are correctly mapped?</span>
       <br>
       <span style="color:red"> Note also that if there is existing data of this type, it will be overwritten with the data you are uploading now.</span>
       <span slot="footer" class="dialog-footer">
@@ -128,7 +129,7 @@
 
         hasSubmitted: false,
         tableType: "",
-        selectedConferenceId: ""
+        selectedConferenceId: "",
       };
     },
     computed: {
