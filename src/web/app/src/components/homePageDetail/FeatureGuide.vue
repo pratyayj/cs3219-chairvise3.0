@@ -5,7 +5,8 @@
     </h3>
     <ol>
       <li>Log in using your Google account through the "Login" button.</li>
-      <li>Upload any number of csv files under the "Import Data" tab.</li>
+      <li>Create a new conference to organise your imported data.</li>
+      <li>Upload any number of CSV files under the "Import Data" tab.</li>
       <li>Create a new presentation and add visualizations using the data uploaded.</li>
       <li>Share the presentation to your fellow friends to view or edit.</li>
     </ol>
