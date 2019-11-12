@@ -33,7 +33,8 @@
     methods: {
      handleVisualisation() {
       var node_assignment = this.options.nodes;
-      var link_assignment = this.options.links
+      var link_assignment = this.options.links;
+      var showFullName = this.options.showFullName;
       var svg = d3.select(this.$el.querySelector("svg")),
        width = 800,//+svg.attr("width"),
        height = +svg.attr("height");
@@ -94,7 +95,13 @@
        .enter().append("text")
        .attr("x", 8)
        .attr("y", ".31em")
-       .text(function(d) { return d.name.substring(0, 3); });
+       .text(function(d) {
+        if (showFullName) {
+         return d.name;
+        } else {
+         return d.name.substring(0, 3);
+        }
+       });
 
 
       //add drag capabilities

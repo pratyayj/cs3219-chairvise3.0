@@ -87,7 +87,12 @@
 
         computed: {
             hasData() {
-                return true;
+                if(this.labels.length === 0) {
+                    //data not yet loaded
+                    return true;
+                } else {
+                    return this.labels.nodes.length !== 0;
+                }
             },
 
             chartData() {

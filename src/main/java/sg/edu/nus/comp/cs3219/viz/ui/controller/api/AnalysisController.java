@@ -110,7 +110,7 @@ public class AnalysisController extends BaseRestController {
         List<Map<String, Object>> links_data = analysisResult.stream()
                 .filter(m -> !m.get("source").equals(m.get("target"))).map(m -> {
                     Map<String, Object> map = new HashMap<>();
-                    m.forEach((k, v) -> map.put(k.toLowerCase(), v));
+                    m.forEach((k, v) -> map.put(k.toLowerCase(), v.toString()));
                     return map;
                 }).collect(Collectors.toList());
         List<Map<String, Object>> nodes_data = links_data.stream().flatMap(m -> {
