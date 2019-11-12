@@ -62,6 +62,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "conferenceList" */ './views/ConferenceList.vue')
     },
     {
+      path: '/help',
+      name: 'help',
+      meta: {
+        title: 'Help'
+      },
+      component: () => import(/* webpackChunkName: "help" */ './views/Help.vue')
+    },
+    {
       path: '/',
       redirect: '/home'
     }

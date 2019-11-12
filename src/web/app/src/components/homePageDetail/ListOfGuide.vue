@@ -23,6 +23,12 @@
           How to Import Data
         </span>
       </el-menu-item>
+      <el-menu-item index="add-conference">
+        <i class="el-icon-question" />
+        <span>
+          How to Add Conference
+        </span>
+      </el-menu-item>
       <el-menu-item index="add-guide">
         <i class="el-icon-question" />
         <span>
@@ -33,12 +39,6 @@
         <i class="el-icon-question" />
         <span>
           How to Share Presentation
-        </span>
-      </el-menu-item>
-      <el-menu-item index="add-conference">
-        <i class="el-icon-question"></i>
-        <span>
-          How to Add Conference
         </span>
       </el-menu-item>
     </el-menu>

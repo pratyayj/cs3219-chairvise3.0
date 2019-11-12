@@ -51,22 +51,43 @@
 
       <!-- conference selection group -->
       <h3>Conference</h3>
-      <p style="color:goldenrod;font-size:14px">Please select a conference to check its existing records.</p>
-      <el-select name="conference" id="selectedConferenceId" class="form-control" tabindex="12"
-              v-model="selectedConferenceId" placeholder="Conference Name">
-        <el-option v-for="conference in conferences"
-                :key="conference.id"
-                :label="conference.conferenceName"
-                :value="conference.id">
-        </el-option>
+      <p style="color:goldenrod;font-size:14px">
+        Please select a conference to check its existing records.
+      </p>
+      <el-select
+        id="selectedConferenceId"
+        v-model="selectedConferenceId"
+        name="conference"
+        class="form-control"
+        tabindex="12"
+        placeholder="Conference Name"
+      >
+        <el-option
+          v-for="conference in conferences"
+          :key="conference.id"
+          :label="conference.conferenceName"
+          :value="conference.id"
+        />
       </el-select>
-      <el-alert style="color:darkred; font-size:18px" v-if="conferences.length === 0" type="error" class="errorMsg"
-        title="There are currently no conferences! Please create one before importing data."/>
-      <p v-if="conferenceRecords.length === 0 && conferences.length !== 0">There are no existing records for this conference.</p>
-      <p v-else-if="conferenceRecords.length !== 0 && conferences.length !==0 ">This conference already has the following records:</p>
+      <el-alert
+        v-if="conferences.length === 0"
+        style="color:darkred; font-size:18px"
+        type="error"
+        class="errorMsg"
+        title="There are currently no conferences! Please create one before importing data."
+      />
+      <p v-if="conferenceRecords.length === 0 && conferences.length !== 0">
+        There are no existing records for this conference.
+      </p>
+      <p v-else-if="conferenceRecords.length !== 0 && conferences.length !==0 ">
+        This conference already has the following records:
+      </p>
       <ul id="conferenceRecords">
-        <li v-for="conferenceRecord in conferenceRecords">
-          {{conferenceRecord.recordType}}
+        <li
+          v-for="conferenceRecord in conferenceRecords"
+          :key="conferenceRecord.recordType"
+        >
+          {{ conferenceRecord.recordType }}
         </li>
       </ul>
 
@@ -139,13 +160,21 @@
     <el-dialog
       title="Confirm"
       :visible.sync="hasSubmitted"
-      width="30%" center>
+      width="30%"
+      center
+    >
       <span>After submission, you will not be able to modify your mapping. Are you sure that the columns are correctly mapped?</span>
       <br>
       <span style="color:red"> Note also that if there is existing data of this type, it will be overwritten with the data you are uploading now.</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button v-on:click="hasSubmitted = false">Cancel</el-button>
-        <el-button type="primary" v-on:click="submitMapping">Confirm</el-button>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="hasSubmitted = false">Cancel</el-button>
+        <el-button
+          type="primary"
+          @click="submitMapping"
+        >Confirm</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -252,6 +281,12 @@
         this.$store.dispatch('getConferenceRecordList', this.selectedConferenceId)
       }
     },
+    mounted() {
+      this.$store.dispatch('getConferenceList');
+      this.$store.commit('resetConferenceRecordList');
+    },
+    updated() {
+    },
     methods: {
       dbTagClicked: function (idx) {
         if (idx === this.selectedDBTag) {
@@ -316,12 +351,6 @@
         this.$store.commit("clearPredefinedMapping");
         this.$store.commit("clearSelectedConferenceId");
       },
-    },
-    mounted() {
-      this.$store.dispatch('getConferenceList');
-      this.$store.commit('resetConferenceRecordList');
-    },
-    updated() {
     }
   };
 </script>

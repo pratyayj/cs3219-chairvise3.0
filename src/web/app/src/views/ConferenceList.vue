@@ -1,16 +1,19 @@
 <template>
+  <div>
     <div>
-        <div>
-            <el-container>
-                <el-aside width="250px" v-if="isLogin">
-                    <list-of-conference/>
-                </el-aside>
-                <el-main>
-                    <conference-brief :id="id"/>
-                </el-main>
-            </el-container>
-        </div>
+      <el-container>
+        <el-aside
+          v-if="isLogin"
+          width="250px"
+        >
+          <list-of-conference />
+        </el-aside>
+        <el-main>
+          <conference-brief :id="id" />
+        </el-main>
+      </el-container>
     </div>
+  </div>
 </template>
 
 <script>
@@ -19,8 +22,15 @@
 
     export default {
         name: "ConferenceList",
+        components: {
+            ConferenceBrief,
+            ListOfConference
+        },
         props: {
-            id: String
+            id: {
+              type: String,
+              required: true
+            }
         },
         computed: {
             isLogin() {
@@ -29,10 +39,6 @@
             isAppLoading() {
                 return this.$store.state.isPageLoading
             }
-        },
-        components: {
-            ConferenceBrief,
-            ListOfConference
         }
     }
 </script>

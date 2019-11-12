@@ -1,15 +1,5 @@
 <template>
   <div>
-    <el-row
-      v-if="isNewPresentation"
-      class="addRowRightAlign"
-    >
-      <el-alert
-        title="Please create presentation before adding sections"
-        type="info"
-        show-icon
-      />
-    </el-row>
     <div
       v-if="!isNewPresentation"
       v-loading="isLoadingDBMetaData || isLoadingSectionList"
