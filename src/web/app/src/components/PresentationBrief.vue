@@ -7,11 +7,11 @@
     class="errorMsg"
   />
   <el-alert
-      v-else-if="conferences.length === 0"
-      style="color:darkred; font-size:18px"
-      type="error"
-      class="errorMsg"
-      title="There are currently no conferences! Please create one before importing data."
+    v-else-if="conferences.length === 0"
+    style="color:darkred; font-size:18px"
+    type="error"
+    class="errorMsg"
+    title="There are currently no conferences! Please create one before importing data."
   />
   <el-form
     v-else
