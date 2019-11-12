@@ -402,7 +402,8 @@ export default {
         "links": {
           "accept": "green",
           "else": "red"
-        }
+        },
+        "showFullName": false
       }
     }
   },
@@ -472,7 +473,8 @@ export default {
         "links": {
           "accept": "green",
           "else": "red"
-        }
+        },
+        "showFullName": false
       }
     }
   },
@@ -1872,6 +1874,140 @@ export default {
       }
     }
   },
+  "Organisation_co_authorship": {
+    name: "Organisation Co-authorship",
+    group: 'Author Record + Submission Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Co-authorship Organisation record',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'All organisations that have had authors working with another author from another organisation on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise. Individual countries not shown.',
+      selections: [
+        {
+          expression: "second_a.a_organisation",
+          rename: 'source'
+        },
+        {
+          expression: "author_record.a_organisation",
+          rename: 'target'
+        },
+        {
+          expression: "s_is_accepted",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'author_record AS `second_a`',
+          customized: true,
+        },
+        {
+          name: 'author_record',
+          customized: false,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [
+        {
+          left: "submission_record.s_submission_id",
+          right: "author_record.a_submission_id",
+        },
+        {
+          left: "submission_record.s_submission_id",
+          right: "second_a.a_submission_id",
+        }
+      ],
+      groupers: [],
+      sorters: [
+        {
+          field: 'submission_record.s_submission_time',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        "url": "coauthorshipdatasimilar",
+        "nodes": {
+          "else": "blue"
+        },
+        "links": {
+          "accept": "green",
+          "else": "red"
+        },
+        "showFullName": true
+      }
+    }
+  },
+  "Country_co_authorship": {
+    name: "Country Co-authorship",
+    group: 'Author Record + Submission Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Co-authorship Country record',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'All counries that have had authors working with another author from another countries on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise. Individual countries not shown.',
+      selections: [
+        {
+          expression: "second_a.a_country",
+          rename: 'source'
+        },
+        {
+          expression: "author_record.a_country",
+          rename: 'target'
+        },
+        {
+          expression: "s_is_accepted",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'author_record AS `second_a`',
+          customized: true,
+        },
+        {
+          name: 'author_record',
+          customized: false,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [
+        {
+          left: "submission_record.s_submission_id",
+          right: "author_record.a_submission_id",
+        },
+        {
+          left: "submission_record.s_submission_id",
+          right: "second_a.a_submission_id",
+        }
+      ],
+      groupers: [],
+      sorters: [
+        {
+          field: 'submission_record.s_submission_time',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        "url": "coauthorshipdatasimilar",
+        "nodes": {
+          "else": "blue"
+        },
+        "links": {
+          "accept": "green",
+          "else": "red"
+        },
+        "showFullName": true
+      }
+    }
+  },
   "reviewer_assignment_rank": {
     name: "Reviewer Assignment Rank",
     group: 'Review Record',
@@ -3124,6 +3260,106 @@ export default {
       }
     }
   },
+  "Reviewers_evaluation_expertise": {
+    name: "Reviewers evaluation expertise",
+    group: 'Review Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Reviewers evaluation expertise',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'Blue nodes represent reviewers that wrote the review, pink nodes represent their evaluation score. The lines between the nodes represent the reviewer\'s level of expertise. A darker line indicates a low level of expertise, while a line closer to blue indicates a high level of expertise. This allows analysis between the reviewers\' general level of expertise and how they evaluate papers',
+      selections: [
+        {
+          expression: "r_reviewer_name",
+          rename: 'source'
+        },
+        {
+          expression: "r_overall_evaluation_score",
+          rename: 'target'
+        },
+        {
+          expression: "r_expertise_level",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'review_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdata",
+        "nodes": {
+          "article": "blue",
+          "else": "pink"
+        },
+        "links": {
+          "0.0": "#000814",
+          "1.0": "#00235c",
+          "2.0": "#003ea3",
+          "3.0": "#0051d4",
+          "4.0": "#0062ff",
+          "else": "#00fcdb"
+        },
+        "showFullName": false
+      }
+    }
+  },
+  "Reviewers_evaluation_confidence": {
+    name: "Reviewers evaluation confidence",
+    group: 'Review Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Reviewers evaluation confidence',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'Blue nodes represent reviewers that wrote the review, pink nodes represent their confidence. The lines between the nodes represent the reviewer\'s level of expertise. A darker line indicates a low level of expertise, while a line closer to blue indicates a high level of expertise. This allows analysis between the reviewers\' general level of expertise and their confidence in evaluating papers',
+      selections: [
+        {
+          expression: "r_reviewer_name",
+          rename: 'source'
+        },
+        {
+          expression: "r_confidence_level",
+          rename: 'target'
+        },
+        {
+          expression: "r_expertise_level",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'review_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdata",
+        "nodes": {
+          "article": "blue",
+          "else": "pink"
+        },
+        "links": {
+          "0.0": "#000814",
+          "1.0": "#00235c",
+          "2.0": "#003ea3",
+          "3.0": "#0051d4",
+          "4.0": "#0062ff",
+          "else": "#00fcdb"
+        },
+        "showFullName": false
+      }
+    }
+  },
   "avg_weighted_score_author": {
     name: "Average Weighted Score Rank Author",
     group: 'Author Record + Review Record',
@@ -3324,6 +3560,65 @@ export default {
         yAxisFieldName: 'avg_weighted_score',
         numOfResultToDisplay: 10,
         isColorfulBar: true,
+      }
+    }
+  },
+  "Authors_review_score": {
+    name: "Authors review score",
+    group: 'Author Record + Review Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Authors review score',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'Blue nodes represent authors that wrote the papers, pink nodes represent their evaluation score. The lines between the nodes represent the reviewer\'s level of expertise. A darker line indicates a low level of expertise, while a line closer to blue indicates a high level of expertise.',
+      selections: [
+        {
+          expression: "a_first_name",
+          rename: 'source'
+        },
+        {
+          expression: "r_overall_evaluation_score",
+          rename: 'target'
+        },
+        {
+          expression: "r_expertise_level",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'author_record',
+          customized: false,
+        },
+        {
+          name: 'review_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [
+        {
+          left: "r_submission_id",
+          right: "a_submission_id",
+        }
+      ],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdata",
+        "nodes": {
+          "article": "blue",
+          "else": "pink"
+        },
+        "links": {
+          "0.0": "#000814",
+          "1.0": "#00235c",
+          "2.0": "#003ea3",
+          "3.0": "#0051d4",
+          "4.0": "#0062ff",
+          "else": "#00fcdb"
+        },
+        "showFullName": false
       }
     }
   },
