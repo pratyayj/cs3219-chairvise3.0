@@ -31,6 +31,20 @@
           </li>
         </ul>
       </li>
+      <li id="add-conference">
+        <h3>User Guide for Adding Conference:</h3>
+      </li>
+      <li class="without-bullets">
+        <ul>
+          <li>Step 1. Upon logging in, click on the "Conferences" tab.</li>
+          <li>Step 2. Create a new conference name (minimum 3 characters) with the year (compulsory).</li>
+          <li>Step 3. Save the conference.</li>
+          <li class="without-bullets">
+&nbsp;
+          </li>
+          <li><b>Note: </b>Without at least one existing conference, you cannot import any data or make any presentations.</li>
+        </ul>
+      </li>
       <li id="add-guide">
         <h3>User Guide for Adding Presentation:</h3>
       </li>
@@ -80,16 +94,6 @@
             <b>Note: </b>There is also an option to give Public Access Control (view or edit). And you can view who
             has access to the presentation as well.
           </li>
-        </ul>
-      </li>
-      <li id="add-conference"><h3>User Guide for Adding Conference:</h3></li>
-      <li class="without-bullets">
-        <ul>
-          <li>Step 1. Upon logging in, click on the "Conference List".</li>
-          <li>Step 2. Create a new conference name (minimum 3 characters) with the year (compulsory).</li>
-          <li>Step 3. Save the conference.</li>
-          <li class="without-bullets">&nbsp;</li>
-          <li><b>Note: </b>Without at least one existing conference, you cannot import any data or make any presentations.</li>
         </ul>
       </li>
     </ul>
