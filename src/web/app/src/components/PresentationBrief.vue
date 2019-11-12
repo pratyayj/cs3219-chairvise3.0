@@ -11,7 +11,7 @@
     style="color:darkred; font-size:18px"
     type="error"
     class="errorMsg"
-    title="There are currently no conferences! Please create one before importing data."
+    title="There are currently no conferences! Please create one before creating a presentation."
   />
   <el-form
     v-else
