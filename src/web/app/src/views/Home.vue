@@ -1,35 +1,29 @@
 <template>
   <div>
-    <div>
-      <el-container>
-        <el-aside>
-          <ListOfGuide />
-        </el-aside>
-        <el-main>
-          <WelcomeMessage />
-          <FeatureGuide />
-          <br>
-          <DetailedFeatureGuide />
-        </el-main>
-      </el-container>
-    </div>
+    <el-container>
+      <el-main>
+        <WelcomeMessage v-if="!isLogin" />
+        <Dashboard v-else />
+      </el-main>
+    </el-container>
   </div>
 </template>
 
 <script>
   // @ is an alias to /src
   import WelcomeMessage from '@/components/homePageDetail/WelcomeMessage.vue'
-  import FeatureGuide from '@/components/homePageDetail/FeatureGuide.vue'
-  import DetailedFeatureGuide from '@/components/homePageDetail/DetailedFeatureGuide.vue'
-  import ListOfGuide from '@/components/homePageDetail/ListOfGuide.vue'
+  import Dashboard from '@/components/homePageDetail/Dashboard.vue'
 
   export default {
     name: 'Home',
     components: {
       WelcomeMessage,
-      FeatureGuide,
-      DetailedFeatureGuide,
-      ListOfGuide
+      Dashboard
+    },
+    computed: {
+      isLogin() {
+        return this.$store.state.userInfo.isLogin
+      },
     }
   }
 </script>
