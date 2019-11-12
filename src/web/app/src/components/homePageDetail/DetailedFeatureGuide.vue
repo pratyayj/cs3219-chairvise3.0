@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>More Detailed User Guide</h2>
+    <h2>Detailed User Guide</h2>
     <ul>
       <li id="import-guide">
         <h3>User Guide for Importing Data:</h3>
