@@ -65,6 +65,16 @@
         />
       </el-select>
     </el-form-item>
+    <div v-if="!isInEditMode">
+    <el-form-item label="Existing Records">
+      <ul>
+      <li id="conferenceRecords" v-for="conferenceRecord in conferenceRecords"
+          :key="conferenceRecord.recordType">
+          {{ conferenceRecord.recordType }}
+      </li>
+      </ul>
+    </el-form-item>
+    </div>
     <el-form-item>
       <el-button
         v-if="!isInEditMode && isConferenceEditable"
@@ -180,12 +190,16 @@
             years () {
                 const year = new Date().getFullYear() + 10;
                 return Array.from({length: year - 1900}, (value, index) => 1901 + index)
+            },
+            conferenceRecords: function() {
+                return this.$store.state.conferenceRecord.conferenceRecordList;
             }
         },
         watch: {
             // when id changes run the method
             'id'() {
-                this.updateConferenceForm()
+                this.updateConferenceForm();
+                this.$store.dispatch('getConferenceRecordList', this.id);
             }
         },
         mounted: function() {
