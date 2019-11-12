@@ -81,15 +81,6 @@
         </div>
       </el-card>
     </el-col>
-    <!-- <el-col
-      class="column-card"
-      :sm="8"
-    >
-      <el-card>
-        <h1>Share</h1>
-        and export your visualisation with others.
-      </el-card>
-    </el-col> -->
   </el-row>
 </template>
 
