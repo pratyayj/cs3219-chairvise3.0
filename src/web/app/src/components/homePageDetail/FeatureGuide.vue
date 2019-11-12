@@ -10,10 +10,6 @@
       <li>Create a new presentation and add visualizations using the data uploaded.</li>
       <li>Share the presentation to your fellow friends to view or edit.</li>
     </ol>
-    <img
-      alt="Guiding Diagram"
-      src="@/assets/GeneralGuide.png"
-    >
     <h3 id="features-available">
       Currently, these are the pre-defined features that we support:
     </h3>
