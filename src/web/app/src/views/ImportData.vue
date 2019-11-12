@@ -21,7 +21,7 @@
         ref="mapTool"
       />
       <div
-        v-else
+        v-else-if="hasConferences"
         class="upload-box"
       >
         <el-select
@@ -97,6 +97,13 @@
           </div>
         </el-upload>
       </div>
+      <el-alert
+        v-else
+        style="color:darkred; font-size:18px"
+        type="error"
+        class="errorMsg"
+        title="There are currently no conferences! Please create one before importing data."
+      />
     </div>
   </div>
 </template>
@@ -159,6 +166,9 @@
                 set: function (newValue) {
                     this.$store.commit("setHasHeader", newValue);
                 }
+            },
+            hasConferences() {
+              return this.$store.state.conference.conferenceList.length > 0;
             },
             predefinedMappingId: {
                 get: function () {
