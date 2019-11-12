@@ -50,7 +50,7 @@
       </li>
       <li class="without-bullets">
         <ul>
-          <li>Step 1. Upon logging in, click on the "Analyze" tab.</li>
+          <li>Step 1. Upon logging in, click on the "Presentations" tab.</li>
           <li>
             Step 2. Create a new presentation name (minimum 3 characters) with description (optional).
             Select a conference from the dropdown list to associate this presentation with (create a conference
