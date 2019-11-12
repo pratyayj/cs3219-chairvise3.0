@@ -1,104 +1,104 @@
 <template>
-    <div>
-        <el-alert
-                v-if="!isLogin && !isAppLoading"
-                title="You need to login-in to view the page"
-                type="error"
-        >
+  <div>
+    <el-alert
+      v-if="!isLogin && !isAppLoading"
+      title="You need to login-in to view the page"
+      type="error"
+    >
             &nbsp;
-            <el-button
-                    type="warning"
-                    plain
-                    size="mini"
-                    @click="navigateToHomePage"
-            >
-                Return to the Home Page
-            </el-button>
-        </el-alert>
-        <div v-if="isLogin">
-            <mapping-tool
-                    v-if="isReadyForMapping"
-                    ref="mapTool"
-            />
-            <div
-                    v-else
-                    class="upload-box"
-            >
-                <el-select
-                        v-model="formatType"
-                        placeholder="Format Type"
-                >
-                    <el-option
-                            :key="'EasyChair'"
-                            :label="'EasyChair'"
-                            :value="1"
-                    />
-                    <el-option
-                            :key="'SoftConf'"
-                            :label="'SoftConf'"
-                            :value="2"
-                    />
-                </el-select>
-                <el-select
-                        v-model="tableType"
-                        placeholder="Table Type"
-                >
-                    <el-option
-                            v-for="(schema, idx) in dbSchemas"
-                            :key="schema.name"
-                            :label="schema.name"
-                            :value="idx"
-                    />
-                </el-select>
-                <el-select
-                        v-model="hasHeader"
-                        placeholder="Has header?"
-                >
-                    <el-option
-                            :key="'Yes'"
-                            :label="'Yes'"
-                            :value="true"
-                    />
-                    <el-option
-                            :key="'No'"
-                            :label="'No'"
-                            :value="false"
-                    />
-                </el-select>
-                <el-select
-                        v-model="predefinedMappingId"
-                        placeholder="Predefined Mapping"
-                >
-                    <el-option
-                            v-for="(mapping, idx) in predefinedMappings"
-                            :key="mapping.name"
-                            :label="mapping.name"
-                            :value="idx"
-                    />
-                </el-select>
-                <el-upload
-                        v-if="isReadyForUpload"
-                        drag
-                        action=""
-                        :auto-upload="false"
-                        :show-file-list="false"
-                        :multiple="false"
-                        :on-change="fileUploadHandler"
-                >
-                    <i class="el-icon-upload" />
-                    <div class="el-upload__text">
-                        Drop file here or <em>click to upload</em>
-                    </div>
-                    <div
-                            slot="tip"
-                            class="el-upload__tip"
-                    >
-                        Please upload .csv files with filed names.
-                    </div>
-                </el-upload>
-            </div>
-        </div>
+      <el-button
+        type="warning"
+        plain
+        size="mini"
+        @click="navigateToHomePage"
+      >
+        Return to the Home Page
+      </el-button>
+    </el-alert>
+    <div v-if="isLogin">
+      <mapping-tool
+        v-if="isReadyForMapping"
+        ref="mapTool"
+      />
+      <div
+        v-else
+        class="upload-box"
+      >
+        <el-select
+          v-model="formatType"
+          placeholder="Format Type"
+        >
+          <el-option
+            :key="'EasyChair'"
+            :label="'EasyChair'"
+            :value="1"
+          />
+          <el-option
+            :key="'SoftConf'"
+            :label="'SoftConf'"
+            :value="2"
+          />
+        </el-select>
+        <el-select
+          v-model="tableType"
+          placeholder="Table Type"
+        >
+          <el-option
+            v-for="(schema, idx) in dbSchemas"
+            :key="schema.name"
+            :label="schema.name"
+            :value="idx"
+          />
+        </el-select>
+        <el-select
+          v-model="hasHeader"
+          placeholder="Has header?"
+        >
+          <el-option
+            :key="'Yes'"
+            :label="'Yes'"
+            :value="true"
+          />
+          <el-option
+            :key="'No'"
+            :label="'No'"
+            :value="false"
+          />
+        </el-select>
+        <el-select
+          v-model="predefinedMappingId"
+          placeholder="Predefined Mapping"
+        >
+          <el-option
+            v-for="(mapping, idx) in predefinedMappings"
+            :key="mapping.name"
+            :label="mapping.name"
+            :value="idx"
+          />
+        </el-select>
+        <el-upload
+          v-if="isReadyForUpload"
+          drag
+          action=""
+          :auto-upload="false"
+          :show-file-list="false"
+          :multiple="false"
+          :on-change="fileUploadHandler"
+        >
+          <i class="el-icon-upload" />
+          <div class="el-upload__text">
+            Drop file here or <em>click to upload</em>
+          </div>
+          <div
+            slot="tip"
+            class="el-upload__tip"
+          >
+            Please upload .csv files with filed names.
+          </div>
+        </el-upload>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>

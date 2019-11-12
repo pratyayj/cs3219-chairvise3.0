@@ -6,6 +6,13 @@
     show-icon
     class="errorMsg"
   />
+  <el-alert
+      v-else-if="conferences.length === 0"
+      style="color:darkred; font-size:18px"
+      type="error"
+      class="errorMsg"
+      title="There are currently no conferences! Please create one before importing data."
+  />
   <el-form
     v-else
     ref="presentationForm"
@@ -70,20 +77,33 @@
         v-model="presentationFormDescription"
       />
     </el-form-item>
-    <el-form-item label="Conference" v-if="isNewPresentation">
-      <el-select name="conference" id="selectedConferenceId" class="form-control" tabindex="12"
-         v-model="selectedPresentationConferenceId" placeholder="Conference Name">
-         <el-option v-for="conference in conferences"
-                   :key="conference.id"
-                   :label="conference.conferenceName"
-                   :value="conference.id">
-         </el-option>
+    <el-form-item
+      v-if="isNewPresentation"
+      label="Conference"
+    >
+      <el-select
+        id="selectedConferenceId"
+        v-model="selectedPresentationConferenceId"
+        name="conference"
+        class="form-control"
+        tabindex="12"
+        placeholder="Conference Name"
+      >
+        <el-option
+          v-for="conference in conferences"
+          :key="conference.id"
+          :label="conference.conferenceName"
+          :value="conference.id"
+        />
       </el-select>
     </el-form-item>
-    <el-alert style="color:darkred; font-size:18px" v-if="conferences.length === 0" type="error" class="errorMsg"
-                title="There are currently no conferences! Please create one before importing data."/>
-    <el-form-item label="Conference" v-if="!isNewPresentation">
-      <el-tag style="color:white; background-color:goldenrod;"> {{ presentationForm.selectedConferenceName }}</el-tag>
+    <el-form-item
+      v-if="!isNewPresentation"
+      label="Conference"
+    >
+      <el-tag style="color:white; background-color:goldenrod;">
+        {{ presentationForm.selectedConferenceName }}
+      </el-tag>
     </el-form-item>
     <el-form-item>
       <el-button
@@ -133,17 +153,28 @@
 
   export default {
     name: 'PresentationBrief',
+
+    components: {
+      AccessControlPanel
+    },
     props: {
-      id: String
+      id: {
+        type: String,
+        required: true
+      }
     },
-    mounted() {
-      this.updatePresentationForm();
-      this.$store.dispatch('getConferenceList');
-    },
-    watch: {
-      'id'() {
-        this.updatePresentationForm()
-      },
+    data() {
+      return {
+        isEditing: false,
+        isAccessControlDialogVisible: false,
+        rules: {
+          name: [
+            {required: true, message: 'Please enter presentation name', trigger: 'blur'},
+            {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
+          ]
+        },
+        selectedPresentationConferenceId: ""
+      }
     },
     computed: {
       isLogin() {
@@ -208,18 +239,14 @@
           return this.$store.state.conference.conferenceList;
       },
     },
-    data() {
-      return {
-        isEditing: false,
-        isAccessControlDialogVisible: false,
-        rules: {
-          name: [
-            {required: true, message: 'Please enter presentation name', trigger: 'blur'},
-            {min: 3, message: 'The length should be more than 3 character', trigger: 'blur'}
-          ]
-        },
-        selectedPresentationConferenceId: ""
-      }
+    watch: {
+      'id'() {
+        this.updatePresentationForm()
+      },
+    },
+    mounted() {
+      this.updatePresentationForm();
+      this.$store.dispatch('getConferenceList');
     },
     methods: {
       changeEditMode(isEditing) {
@@ -318,10 +345,6 @@
           });
         });
       }
-    },
-
-    components: {
-      AccessControlPanel
     },
   }
 </script>

@@ -1,131 +1,131 @@
 <template>
-    <div v-loading="isAccessControlPanelLoading">
-        <h4>Shareable Link</h4>
-        <el-input
-                :value="currentUrl"
-                @focus="$event.target.select()"
+  <div v-loading="isAccessControlPanelLoading">
+    <h4>Shareable Link</h4>
+    <el-input
+      :value="currentUrl"
+      @focus="$event.target.select()"
+    >
+      <template slot="prepend">
+        Any one with the link
+      </template>
+      <template slot="append">
+        <el-select
+          :value="publicAccessLevel"
+          style="width: 150px"
+          @change="modifyPublicAccessControl($event)"
         >
-            <template slot="prepend">
-                Any one with the link
-            </template>
-            <template slot="append">
-                <el-select
-                        :value="publicAccessLevel"
-                        style="width: 150px"
-                        @change="modifyPublicAccessControl($event)"
-                >
-                    <el-option
-                            label="Cannot Access"
-                            value="OFF"
-                    />
-                    <el-option
-                            label="Can View"
-                            value="CAN_READ"
-                    />
-                    <el-option
-                            label="Can Edit"
-                            value="CAN_WRITE"
-                    />
-                </el-select>
-            </template>
-        </el-input>
-        <h4>Specific Access Control</h4>
-        <el-alert
-                v-if="isAccessControlListApiError"
-                :title="accessControlListApiErrorMsg"
-                type="error"
-                show-icon
-                class="errorAlert"
-        />
-        <el-table
-                :data="accessControlList"
-                style="width: 100%"
-                empty-text="No Access Control for this Presentation!"
-        >
-            <el-table-column
-                    prop="userIdentifier"
-                    label="Email"
+          <el-option
+            label="Cannot Access"
+            value="OFF"
+          />
+          <el-option
+            label="Can View"
+            value="CAN_READ"
+          />
+          <el-option
+            label="Can Edit"
+            value="CAN_WRITE"
+          />
+        </el-select>
+      </template>
+    </el-input>
+    <h4>Specific Access Control</h4>
+    <el-alert
+      v-if="isAccessControlListApiError"
+      :title="accessControlListApiErrorMsg"
+      type="error"
+      show-icon
+      class="errorAlert"
+    />
+    <el-table
+      :data="accessControlList"
+      style="width: 100%"
+      empty-text="No Access Control for this Presentation!"
+    >
+      <el-table-column
+        prop="userIdentifier"
+        label="Email"
+      />
+      <el-table-column
+        label="Access Level"
+      >
+        <template slot-scope="scope">
+          <el-select
+            :value="scope.row.accessLevel"
+            placeholder="Select the permission"
+            @change="updateAccessControl(scope.row, $event)"
+          >
+            <el-option
+              label="View"
+              value="CAN_READ"
             />
-            <el-table-column
-                    label="Access Level"
-            >
-                <template slot-scope="scope">
-                    <el-select
-                            :value="scope.row.accessLevel"
-                            placeholder="Select the permission"
-                            @change="updateAccessControl(scope.row, $event)"
-                    >
-                        <el-option
-                                label="View"
-                                value="CAN_READ"
-                        />
-                        <el-option
-                                label="Edit"
-                                value="CAN_WRITE"
-                        />
-                    </el-select>&nbsp;
-                    <el-button
-                            type="danger"
-                            icon="el-icon-delete"
-                            circle
-                            @click="deleteAccessControl(scope.row)"
-                    />
-                </template>
-            </el-table-column>
-        </el-table>
-        <h4>Add New Access Control</h4>
-        <el-alert
-                v-if="isAccessControlFormApiError"
-                :title="accessControlFormApiErrorMsg"
-                type="error"
-                show-icon
-                class="errorAlert"
+            <el-option
+              label="Edit"
+              value="CAN_WRITE"
+            />
+          </el-select>&nbsp;
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            @click="deleteAccessControl(scope.row)"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
+    <h4>Add New Access Control</h4>
+    <el-alert
+      v-if="isAccessControlFormApiError"
+      :title="accessControlFormApiErrorMsg"
+      type="error"
+      show-icon
+      class="errorAlert"
+    />
+    <el-form
+      ref="accessControlForm"
+      label-position="left"
+      label-width="120px"
+      :model="accessControlForm"
+      :rules="accessControlFormRule"
+    >
+      <el-form-item
+        label="Email address"
+        prop="userIdentifier"
+      >
+        <el-input
+          v-model="accessControlFormUserIdentifier"
+          placeholder="Email of the user to share"
         />
-        <el-form
-                ref="accessControlForm"
-                label-position="left"
-                label-width="120px"
-                :model="accessControlForm"
-                :rules="accessControlFormRule"
+      </el-form-item>
+      <el-form-item
+        label="Permissions"
+        prop="accessLevel"
+      >
+        <el-select
+          v-model="accessControlFormAccessLevel"
+          placeholder="Permission the user will have"
+          style="width: 100%"
         >
-            <el-form-item
-                    label="Email address"
-                    prop="userIdentifier"
-            >
-                <el-input
-                        v-model="accessControlFormUserIdentifier"
-                        placeholder="Email of the user to share"
-                />
-            </el-form-item>
-            <el-form-item
-                    label="Permissions"
-                    prop="accessLevel"
-            >
-                <el-select
-                        v-model="accessControlFormAccessLevel"
-                        placeholder="Permission the user will have"
-                        style="width: 100%"
-                >
-                    <el-option
-                            label="View"
-                            value="CAN_READ"
-                    />
-                    <el-option
-                            label="Edit"
-                            value="CAN_WRITE"
-                    />
-                </el-select>
-            </el-form-item>
-            <el-form-item>
-                <el-button
-                        type="primary"
-                        @click="addAccessControl()"
-                >
-                    Add
-                </el-button>
-            </el-form-item>
-        </el-form>
-    </div>
+          <el-option
+            label="View"
+            value="CAN_READ"
+          />
+          <el-option
+            label="Edit"
+            value="CAN_WRITE"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="primary"
+          @click="addAccessControl()"
+        >
+          Add
+        </el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>

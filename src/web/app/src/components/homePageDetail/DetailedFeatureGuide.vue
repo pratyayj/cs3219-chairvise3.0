@@ -13,15 +13,20 @@
             Step 3. Choose the table types of the csv file uploaded (i.e. Author Record, Review Record, Submission
             Record).
           </li>
-          <li>Step 4. Select if there is a header row in the uploaded csv file.<br/>
-          <li>Step 5. For your selected table type, map the database fields to the imported data fields one by one.</li>
+          <li>
+            Step 4. Select if there is a header row in the uploaded csv file.<br>
+          </li><li>Step 5. For your selected table type, map the database fields to the imported data fields one by one.</li>
           <li>Step 6. Select a conference from the dropdown list to associate this data with.</li>
           <li>Step 7. Finally click upload to update the database accordingly.</li>
-          <li class="without-bullets">&nbsp;</li>
-          <li><b>Note: </b> You can select any number of columns to map into the database. Please map all the data
+          <li class="without-bullets">
+&nbsp;
+          </li>
+          <li>
+            <b>Note: </b> You can select any number of columns to map into the database. Please map all the data
             fields you need.
           </li>
-          <li style="color:red"><b>Note: </b>If there is a record of the same type already associated with that conference,
+          <li style="color:red">
+            <b>Note: </b>If there is a record of the same type already associated with that conference,
             it will be overwritten by the data that is being uploaded currently.
           </li>
         </ul>
@@ -32,7 +37,8 @@
       <li class="without-bullets">
         <ul>
           <li>Step 1. Upon logging in, click on the "Analyze" tab.</li>
-          <li>Step 2. Create a new presentation name (minimum 3 characters) with description (optional).
+          <li>
+            Step 2. Create a new presentation name (minimum 3 characters) with description (optional).
             Select a conference from the dropdown list to associate this presentation with (create a conference
             if you have not already done so).
           </li>

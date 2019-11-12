@@ -1,33 +1,101 @@
 <template>
-    <el-alert v-if="isNewConference && !isLogin" title="Please login to create new conference" type="error" show-icon
-              class="errorMsg"/>
-    <el-form v-else label-position="right" ref="conferenceForm" label-width="120px"
-             :model="conferenceForm" v-loading="isLoading">
-        <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg"/>
-        <el-form-item label="Conf. Name" :prop=" isInEditMode ? 'conferenceName' : ''" :rules="rules.conferenceName">
-            <div v-if="!isInEditMode">{{ conferenceForm.conferenceName }}</div>
-            <el-input v-model="conferenceFormName" v-if="isInEditMode"/>
-        </el-form-item>
-        <el-form-item label="Creator" v-if="!isNewConference">
-            <el-tag>Created by {{ conferenceForm.creatorIdentifier }}</el-tag>
-        </el-form-item>
-        <el-form-item label="Year" :prop=" isInEditMode ? 'conferenceYear' : ''" :rules="rules.conferenceYear">
-            <div v-if="!isInEditMode" id="conference-year">{{ conferenceForm.conferenceYear }}</div>
-            <!--- el-input v-model="conferenceFormYear" v-if="isInEditMode"/ -->
-            <el-select v-else placeholder="Conference Year" v-model="conferenceFormYear">
-                <el-option v-for="year in years" :value="year" :key="year" :label="year"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode && isConferenceEditable">Edit
-            </el-button>
-            <el-button type="primary" @click="addConference()" v-if="isInEditMode">Save</el-button>
-            <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewConference">Cancel</el-button>
-            <el-button type="danger" v-if="!isNewConference && isLogin && isConferenceEditable"
-                       @click="deleteConference()">Delete
-            </el-button>
-        </el-form-item>
-    </el-form>
+  <el-alert
+    v-if="isNewConference && !isLogin"
+    title="Please login to create new conference"
+    type="error"
+    show-icon
+    class="errorMsg"
+  />
+  <el-form
+    v-else
+    ref="conferenceForm"
+    v-loading="isLoading"
+    label-position="right"
+    label-width="120px"
+    :model="conferenceForm"
+  >
+    <el-alert
+      v-if="isError"
+      :title="apiErrorMsg"
+      type="error"
+      show-icon
+      class="errorMsg"
+    />
+    <el-form-item
+      label="Conf. Name"
+      :prop=" isInEditMode ? 'conferenceName' : ''"
+      :rules="rules.conferenceName"
+    >
+      <div v-if="!isInEditMode">
+        {{ conferenceForm.conferenceName }}
+      </div>
+      <el-input
+        v-if="isInEditMode"
+        v-model="conferenceFormName"
+      />
+    </el-form-item>
+    <el-form-item
+      v-if="!isNewConference"
+      label="Creator"
+    >
+      <el-tag>Created by {{ conferenceForm.creatorIdentifier }}</el-tag>
+    </el-form-item>
+    <el-form-item
+      label="Year"
+      :prop=" isInEditMode ? 'conferenceYear' : ''"
+      :rules="rules.conferenceYear"
+    >
+      <div
+        v-if="!isInEditMode"
+        id="conference-year"
+      >
+        {{ conferenceForm.conferenceYear }}
+      </div>
+      <!--- el-input v-model="conferenceFormYear" v-if="isInEditMode"/ -->
+      <el-select
+        v-else
+        v-model="conferenceFormYear"
+        placeholder="Conference Year"
+      >
+        <el-option
+          v-for="year in years"
+          :key="year"
+          :value="year"
+          :label="year"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item>
+      <el-button
+        v-if="!isInEditMode && isConferenceEditable"
+        type="primary"
+        @click="changeEditMode(true)"
+      >
+        Edit
+      </el-button>
+      <el-button
+        v-if="isInEditMode"
+        type="primary"
+        @click="addConference()"
+      >
+        Save
+      </el-button>
+      <el-button
+        v-if="isInEditMode && !isNewConference"
+        type="info"
+        @click="changeEditMode(false)"
+      >
+        Cancel
+      </el-button>
+      <el-button
+        v-if="!isNewConference && isLogin && isConferenceEditable"
+        type="danger"
+        @click="deleteConference()"
+      >
+        Delete
+      </el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -36,15 +104,23 @@
     export default {
         name: "ConferenceBrief",
         props: {
-            id: String
+          id: {
+            type: String,
+            required: true
+          }
         },
-        mounted: function() {
-            this.updateConferenceForm()
-        },
-        watch: {
-            // when id changes run the method
-            'id'() {
-                this.updateConferenceForm()
+        data() {
+            return {
+                isEditing: false,
+                rules: {
+                    conferenceName: [
+                        {required: true, message: 'There must be a conference name.', trigger: 'blur'},
+                        {min: 3, message: 'The length should be more than 3 characters.', trigger: 'blur'}
+                    ],
+                    conferenceYear: [
+                        {required: true, message: 'There should be a year, or you will forget too.', trigger: 'blur'}
+                    ]
+                }
             }
         },
         computed: {
@@ -106,19 +182,14 @@
                 return Array.from({length: year - 1900}, (value, index) => 1901 + index)
             }
         },
-        data() {
-            return {
-                isEditing: false,
-                rules: {
-                    conferenceName: [
-                        {required: true, message: 'There must be a conference name.', trigger: 'blur'},
-                        {min: 3, message: 'The length should be more than 3 characters.', trigger: 'blur'}
-                    ],
-                    conferenceYear: [
-                        {required: true, message: 'There should be a year, or you will forget too.', trigger: 'blur'}
-                    ]
-                }
+        watch: {
+            // when id changes run the method
+            'id'() {
+                this.updateConferenceForm()
             }
+        },
+        mounted: function() {
+            this.updateConferenceForm()
         },
         methods: {
             changeEditMode(isEditing) {
