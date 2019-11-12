@@ -372,7 +372,11 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_author_record, submission_record_author_set',
+          name: 'submission_author_record',
+          customized: false,
+        },
+        {
+          name: 'submission_record_author_set',
           customized: true,
         },
         {
@@ -431,8 +435,12 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_author_record, submission_record_author_set, submission_record_author_set AS `second_sras`, submission_author_record AS `second_sar`',
+          name: 'submission_record_author_set, submission_record_author_set AS `second_sras`, submission_author_record AS `second_sar`',
           customized: true,
+        },
+        {
+          name: 'submission_author_record',
+          customized: false,
         },
         {
           name: 'submission_record',
@@ -1948,7 +1956,7 @@ export default {
       type: 'coauthorship',
       title: 'Co-authorship Country record',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'All counries that have had authors working with another author from another countries on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise. Individual countries not shown.',
+      description: 'All countries that have had authors working with another author from another countries on any submission is depicted as connected. A green line indicates that their collaboration was accepted, a red line indicates otherwise. Individual countries not shown.',
       selections: [
         {
           expression: "second_a.a_country",
@@ -2066,7 +2074,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the average expertise level for each reviewer in descending order. This tells us how skilled each reviewer is in reviewer the papers.',
+      description: 'This bar chart shows the average expertise level for each reviewer in descending order. This tells us how skilled each reviewer is in reviewing the papers.',
       selections: [
         {
           expression: 'ROUND(AVG(r_confidence_level), 2)',
@@ -2982,6 +2990,84 @@ export default {
       }
     }
   },
+  "papers_of_similar_quality": {
+    name: "Papers of similar quality",
+    group: 'Review Record + Submission Record',
+    data: {
+      type: 'coauthorship',
+      title: 'Papers of similar quality',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining review and submission, papers which receive similar review scores can be matched to each other to see which papers are similar in quality to each other. Each pink node represents a paper. The color of the links between them represents the evaluation score given to those papers. A score in the large negatives is marked as red. A score of 0 is black. A score in the large positives is blue. A small positive number or small negative number interpolate the colors between red, black and blue.',
+      selections: [
+        {
+          expression: "second_s.s_title",
+          rename: 'source'
+        },
+        {
+          expression: "submission_record.s_title",
+          rename: 'target'
+        },
+        {
+          expression: "review_record.r_overall_evaluation_score",
+          rename: 'type'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'submission_record AS second_s, review_record AS second_r',
+          customized: true,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        },
+        {
+          name: 'review_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [
+        {
+          "left": "review_record.r_submission_id",
+          "right": "submission_record.s_submission_id"
+        },
+        {
+          "left": "second_r.r_submission_id",
+          "right": "second_s.s_submission_id"
+        },
+        {
+          "left": "review_record.r_overall_evaluation_score",
+          "right": "second_r.r_overall_evaluation_score"
+        }
+      ],
+      groupers: [
+        {
+          "field": "review_record.r_submission_id"
+        }
+      ],
+      sorters: [],
+      extraData: {
+        "url": "coauthorshipdatasimilar",
+        "nodes": {
+          "else": "pink"
+        },
+        "links": {
+          "-1.0": "#7a0800",
+          "-2.0": "#a60b00",
+          "-3.0": "#d10e00",
+          "-4.0": "#ff1100",
+          "0.0": "#000814",
+          "1.0": "#00235c",
+          "2.0": "#003ea3",
+          "3.0": "#0051d4",
+          "4.0": "#0062ff",
+          "else": "#00fcdb"
+        },
+        "showFullName": false
+      }
+    }
+  },
   "average_expert_level_for_submission": {
     name: "Average Expert Level For Submission",
     group: 'Review Record',
@@ -3260,6 +3346,54 @@ export default {
       }
     }
   },
+  "avg_expertise_evaluation_score": {
+    name: "Average expertise per evaluation score",
+    group: 'Review Record',
+    data: {
+      type: 'bar_chart',
+      title: 'Average expertise per evaluation score',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the average expertise for each review that was given a certain evaluation score. This can show trends within reviewer\' expertise that gives a certain score. For example, a downwards slope would indicate that reviews that give higher scores are on average by reviewers without much expertise on the subject.',
+      selections: [
+        {
+          expression: 'AVG(r_expertise_level)',
+          rename: 'review_expertise'
+        },
+        {
+          expression: "r_overall_evaluation_score",
+          rename: 'overall_eval_score'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'review_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: "r_overall_evaluation_score"
+        }
+      ],
+      sorters: [
+        {
+          field: 'r_overall_evaluation_score',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        type: 'category',
+        dataSetLabel: 'Average expertise of Review score',
+        fieldsShownInToolTips: [],
+        xAxisFieldName: 'overall_eval_score',
+        yAxisFieldName: 'review_expertise',
+        numOfResultToDisplay: 10,
+        isColorfulBar: true,
+      }
+    }
+  },
   "Reviewers_evaluation_expertise": {
     name: "Reviewers evaluation expertise",
     group: 'Review Record',
@@ -3267,7 +3401,7 @@ export default {
       type: 'coauthorship',
       title: 'Reviewers evaluation expertise',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'Blue nodes represent reviewers that wrote the review, pink nodes represent their evaluation score. The lines between the nodes represent the reviewer\'s level of expertise. A darker line indicates a low level of expertise, while a line closer to blue indicates a high level of expertise. This allows analysis between the reviewers\' general level of expertise and how they evaluate papers',
+      description: 'Blue nodes represent reviewers that wrote the review, pink nodes represent their evaluation score. The lines between the nodes represent the reviewer\'s level of expertise. A darker line indicates a low level of expertise, while a line closer to blue indicates a high level of expertise. This allows analysis between the reviewers\' general level of expertise and how they evaluate papers, showing the general distribution and which reviewers fall into that category.',
       selections: [
         {
           expression: "r_reviewer_name",
@@ -3307,6 +3441,54 @@ export default {
           "else": "#00fcdb"
         },
         "showFullName": false
+      }
+    }
+  },
+  "avg_expertise_evaluation_confidence": {
+    name: "Average expertise per evaluation confidence",
+    group: 'Review Record',
+    data: {
+      type: 'bar_chart',
+      title: 'Average expertise per evaluation confidence',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the average expertise for each review that was given a certain evaluation confidence. This can show trends within reviewer\' expertise that gives a certain confidence. For example, a downwards slope would indicate that reviewers that are not very confident of their score are on average have a lower level of expertise on the subject',
+      selections: [
+        {
+          expression: 'AVG(r_expertise_level)',
+          rename: 'review_expertise'
+        },
+        {
+          expression: "r_confidence_level",
+          rename: 'overall_confi_score'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'review_record',
+          customized: false,
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: "overall_confi_score"
+        }
+      ],
+      sorters: [
+        {
+          field: 'overall_confi_score',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        type: 'category',
+        dataSetLabel: 'Average expertise of Review confidence',
+        fieldsShownInToolTips: [],
+        xAxisFieldName: 'overall_confi_score',
+        yAxisFieldName: 'review_expertise',
+        numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
