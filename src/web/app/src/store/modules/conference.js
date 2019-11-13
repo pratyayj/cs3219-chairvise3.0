@@ -79,7 +79,7 @@ export default {
         resetConferenceForm(state) {
             state.conferenceForm.id = '';
             state.conferenceForm.conferenceName = '';
-            state.conferenceForm.conferenceYear = '';
+            state.conferenceForm.conferenceYear = new Date().getFullYear();
             state.conferenceForm.creatorIdentifier = '';
             state.conferenceFormStatus.isApiError = false;
             state.conferenceFormStatus.isLoading = false;

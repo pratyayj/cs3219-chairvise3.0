@@ -51,29 +51,32 @@
       >
         {{ conferenceForm.conferenceYear }}
       </div>
-      <!--- el-input v-model="conferenceFormYear" v-if="isInEditMode"/ -->
       <el-select
         v-else
         v-model="conferenceFormYear"
         placeholder="Conference Year"
+        filterable
+        default-first-option
       >
         <el-option
           v-for="year in years"
           :key="year"
           :value="year"
-          :label="year"
         />
       </el-select>
     </el-form-item>
     <div v-if="!isInEditMode">
-    <el-form-item label="Existing Records">
-      <ul>
-      <li id="conferenceRecords" v-for="conferenceRecord in conferenceRecords"
-          :key="conferenceRecord.recordType">
-          {{ conferenceRecord.recordType }}
-      </li>
-      </ul>
-    </el-form-item>
+      <el-form-item label="Existing Records">
+        <ul>
+          <li
+            v-for="conferenceRecord in conferenceRecords"
+            id="conferenceRecords"
+            :key="conferenceRecord.recordType"
+          >
+            {{ conferenceRecord.recordType }}
+          </li>
+        </ul>
+      </el-form-item>
     </div>
     <el-form-item>
       <el-button
